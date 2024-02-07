@@ -7,10 +7,10 @@ import { Button } from "@/components/Button";
 import { useState, useEffect } from "react";
 import { ErrorItem } from "@/types/ErrorItem";
 import { getErrorFromZod } from "@/utils/getErrorFromZod";
-import * as api from "@/api/api";
+import * as api from "@/api/auth";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
-import { toast } from "react-toastify";
+import { addAlert } from "@/utils/addAlert";
 
 const page = () => {
     const router = useRouter();
@@ -18,15 +18,6 @@ const page = () => {
     const [passwordField, setPasswordField] = useState("");
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
-
-    const configAlert = {
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-    };
 
     const loginSchema = z.object({
         emailField: z.string().email("E-mail inválido"),
@@ -46,9 +37,9 @@ const page = () => {
         });
         setLoading(false);
         if (!result.status) {
-            toast.error(result.error, configAlert);
+            addAlert("error", result.error);
         } else {
-            toast.success("Login bem sucedido!", configAlert);
+            addAlert("success", "Login bem sucedido!");
             setCookie("token", result.token, {
                 expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             });

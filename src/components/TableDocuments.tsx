@@ -1,17 +1,16 @@
 "use client";
 
 import { Document } from "@/types/Document";
-import { TableItem, TableItemPlaceholder } from "./TableItem";
+import {
+    TableDocumentItem,
+    TableDocumentPlaceholder,
+} from "./TableDocumentItem";
 type Props = {
     documents: Document[];
     loading: boolean;
 };
 
 export const TableDocuments = ({ documents, loading }: Props) => {
-    const handleActionButton = () => {
-        alert("TODO Adicionar ação");
-    };
-
     return (
         <div className="pb-4">
             <table className="w-full">
@@ -38,18 +37,18 @@ export const TableDocuments = ({ documents, loading }: Props) => {
                 <tbody>
                     {loading && (
                         <>
-                            <TableItemPlaceholder />
-                            <TableItemPlaceholder />
-                            <TableItemPlaceholder />
-                            <TableItemPlaceholder />
-                            <TableItemPlaceholder />
-                            <TableItemPlaceholder />
+                            <TableDocumentPlaceholder />
+                            <TableDocumentPlaceholder />
+                            <TableDocumentPlaceholder />
+                            <TableDocumentPlaceholder />
+                            <TableDocumentPlaceholder />
+                            <TableDocumentPlaceholder />
                         </>
                     )}
                     {!loading &&
                         documents.length > 0 &&
                         documents.map((item) => (
-                            <TableItem document={item} key={item.id} />
+                            <TableDocumentItem document={item} key={item.id} />
                         ))}
                 </tbody>
             </table>

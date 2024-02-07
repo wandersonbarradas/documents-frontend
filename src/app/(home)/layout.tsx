@@ -1,7 +1,6 @@
 import { Header } from "@/components/Header";
 import { isLoggedIn } from "@/api/server";
 import { redirect } from "next/navigation";
-import { Metadata } from "next";
 
 export default async function RootLayout({
     children,

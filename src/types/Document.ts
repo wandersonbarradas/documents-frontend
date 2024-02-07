@@ -11,5 +11,5 @@ export type Document = {
     };
     date: Date;
     documentTypeId: number;
-    documentType: Omit<DocumentType, "texts">;
+    documentType: DocumentType;
 };

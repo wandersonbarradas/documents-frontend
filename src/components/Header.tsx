@@ -7,23 +7,15 @@ import { LuHome } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
 import { setCookie } from "cookies-next";
 import { useRouter, usePathname } from "next/navigation";
-import { toast } from "react-toastify";
 import { verifyPathname } from "@/utils/verifyPathname";
+import { addAlert } from "@/utils/addAlert";
 
 export const Header = () => {
     const router = useRouter();
     const pathname = usePathname();
     const handleLogOut = () => {
         setCookie("token", "");
-        toast.success("Você saiu com segurança!", {
-            position: "top-right",
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-        });
+        addAlert("success", "Você saiu com segurança!");
         router.refresh();
     };
 

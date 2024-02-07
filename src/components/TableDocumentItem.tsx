@@ -6,7 +6,7 @@ type Props = {
     document: Document;
 };
 
-export const TableItem = ({ document }: Props) => {
+export const TableDocumentItem = ({ document }: Props) => {
     const router = useRouter();
     const handleClickItem = () => {
         router.push(`/documents/${document.id}`);
@@ -41,7 +41,7 @@ export const TableItem = ({ document }: Props) => {
     );
 };
 
-export const TableItemPlaceholder = () => {
+export const TableDocumentPlaceholder = () => {
     return (
         <tr className="text-center border-b border-gray-300 h-10 ">
             <td className="py-2 border-r border-gray-300">

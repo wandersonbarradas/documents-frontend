@@ -1,13 +1,13 @@
 "use client";
 
-import { ItemButton } from "./ItemButton";
+import { ItemButton } from "../ItemButton";
 import { LuPlus } from "react-icons/lu";
 import { LuArrowDownWideNarrow } from "react-icons/lu";
 import { LuFilter } from "react-icons/lu";
 import { Document } from "@/types/Document";
-import * as api from "@/api/api";
+import * as api from "@/api/documents";
 import { useEffect, useState } from "react";
-import { TableDocuments } from "./TableDocuments";
+import { TableDocuments } from "../TableDocuments";
 
 export const HomePage = () => {
     const [documents, setDocuments] = useState<Document[]>([]);
@@ -23,6 +23,8 @@ export const HomePage = () => {
     const loadDocuments = async () => {
         setLoading(true);
         const docs = await api.getDocuments();
+        if (docs) {
+        }
         setDocuments(docs);
         setLoading(false);
     };
