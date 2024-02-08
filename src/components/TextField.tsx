@@ -7,6 +7,7 @@ type Props = {
     disabled?: boolean;
     errorMessage?: string;
     id?: string;
+    heightFull?: boolean;
 };
 
 export const TextField = ({
@@ -16,6 +17,7 @@ export const TextField = ({
     disabled,
     errorMessage,
     id,
+    heightFull,
 }: Props) => {
     return (
         <div className="w-full">
@@ -28,7 +30,7 @@ export const TextField = ({
                 className={`block w-full border p-3 rounded-lg outline-none 
                 placeholder:text-gray-300 ${
                     errorMessage ? "border-red-600" : "border-gray-300"
-                } focus:border-black`}
+                } ${heightFull ? " h-96" : ""} focus:border-black`}
             />
             {errorMessage && (
                 <div className="text-sm text-red-600">{errorMessage}</div>

@@ -19,7 +19,7 @@ export const AddField = ({
     refreshAction,
 }: Props) => {
     const [nameField, setNameField] = useState("");
-    const [typeField, setTypeField] = useState("");
+    const [typeField, setTypeField] = useState("0");
     const [identifierField, setIdentifierField] = useState("");
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
@@ -59,7 +59,7 @@ export const AddField = ({
         } else {
             addAlert("success", "Adicionado com sucesso!");
             setNameField("");
-            setTypeField("");
+            setTypeField("0");
             setIdentifierField("");
             refreshAction();
         }
@@ -93,11 +93,11 @@ export const AddField = ({
                     className={`block w-full border border-gray-300 p-3 rounded-lg outline-none focus:border-black 
                     ${selectError ? "border-red-600" : ""}`}
                     disabled={loading}
-                    defaultValue={typeField}
+                    value={typeField}
                     onChange={(e) => setTypeField(e.target.value)}
                     id="typeField"
                 >
-                    <option value="">Selecione um tipo</option>
+                    <option value="0">Selecione um tipo</option>
                     <option value="text">Texto</option>
                     <option value="number">Numero</option>
                 </select>

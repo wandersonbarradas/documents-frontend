@@ -1,4 +1,4 @@
-import { HomePage } from "@/components/pages/HomePage";
+import { HomePage } from "@/components/documents/HomePage";
 
 const Page = async () => {
     return <HomePage />;
