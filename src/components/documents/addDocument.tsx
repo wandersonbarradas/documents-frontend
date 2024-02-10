@@ -11,19 +11,36 @@ import { DocumentType } from "@/types/DocumentType";
 import { DocumentTypeText } from "@/types/DocumentTypeText";
 import { TextField } from "../TextField";
 import { DocumentTypeFull } from "@/types/DocumentTypeFull";
+import { getPDF, addDocument } from "@/api/documents";
+import { DocumentTypeField } from "@/types/DocumentTypeField";
+import { DocumentField } from "@/types/DocumentField";
+import Formatter from "@/utils/formatter";
 
 type Props = {
     documentType: DocumentTypeFull;
 };
 
+type Fields = {
+    name: string;
+    value: string;
+    type: string;
+    identifier: string;
+};
+
 export const AddDocument = ({ documentType }: Props) => {
-    const [date, setDate] = useState<Date>(new Date());
+    const [date, setDate] = useState<string>(
+        new Date().toISOString().split("T")[0] + "T00:00:00",
+    );
     const [selectedTextId, setSelectedTextId] = useState<number>(0);
     const [text, setText] = useState("");
-    const [validityField, setValidityField] = useState(90);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
     const [selectTextError, setSelectTextError] = useState("");
+    const [fieldData, setFieldData] = useState<Fields[]>([]);
+
+    useEffect(() => {
+        handleText();
+    }, [fieldData, date, selectedTextId]);
 
     useEffect(() => {
         const textItem = documentType.texts.find(
@@ -36,40 +53,130 @@ export const AddDocument = ({ documentType }: Props) => {
         }
     }, [selectedTextId]);
 
-    const documentTypeSchema = z.object({
-        nameField: z.string().min(4, "Preencha o nome"),
-        titleField: z.string().min(4, "Preencha o título"),
-        validityField: z
-            .number({ invalid_type_error: "Preencha a validade" })
-            .min(1, "Preencha a validade"),
+    useEffect(() => {
+        const fieldsArr: Fields[] = [];
+        for (let i in documentType.documentTypeField) {
+            const item = documentType.documentTypeField[i];
+            fieldsArr.push({
+                name: item.name,
+                value: "",
+                type: item.type,
+                identifier: item.identifier,
+            });
+        }
+        setFieldData(fieldsArr);
+    }, []);
+
+    useEffect(() => {
+        const err = errors.find(
+            (item) => item.field === "selectedTextId",
+        )?.message;
+        if (err) {
+            setSelectTextError(err);
+        } else {
+            setSelectTextError("");
+        }
+    }, [errors]);
+
+    const documentSchema = z.object({
+        date: z
+            .string({ invalid_type_error: "Preencha a data" })
+            .transform((str) => new Date(str)),
+        selectedTextId: z.number().gt(0, "Selectione o texto"),
+        text: z.string().min(1, "Texto não pode ser vazio"),
+        fieldData: z
+            .array(
+                z.object({
+                    name: z.string(),
+                    value: z.string(),
+                    type: z.string(),
+                    identifier: z.string(),
+                }),
+            )
+            .optional(),
     });
 
-    // const handleAddDocumentType = async () => {
-    //     setErrors([]);
-    //     const data = documentTypeSchema.safeParse({
-    //         nameField,
-    //         titleField,
-    //         validityField,
-    //     });
-    //     if (!data.success) return setErrors(getErrorFromZod(data.error));
-    //     setLoading(true);
-    //     const result = await addDocumentType({
-    //         name: data.data.nameField,
-    //         title: data.data.titleField,
-    //         validityPeriod: data.data.validityField,
-    //     });
-    //     setLoading(false);
-    //     if (typeof result === "string") {
-    //         addAlert("error", result);
-    //     } else {
-    //         addAlert("success", "Adicionado com sucesso!");
-    //     }
-    // };
+    const generate = async () => {
+        await getPDF();
+    };
+
+    const handleSetValue = (field: Fields, value: string) => {
+        let list = [...fieldData];
+        const index = list.indexOf(field);
+        list[index].value = value;
+        setFieldData(list);
+    };
+
+    const handleText = () => {
+        if (selectedTextId <= 0) return false;
+
+        let textItem = documentType.texts.find(
+            (item) => (item.id = selectedTextId),
+        )?.text as string;
+
+        if (textItem) {
+            fieldData.forEach((item) => {
+                if (
+                    item.name.includes("CPF") ||
+                    item.name.includes("cpf") ||
+                    item.name.includes("cnpj") ||
+                    item.name.includes("CNPJ")
+                ) {
+                    textItem = textItem.replace(
+                        item.identifier,
+                        Formatter.cpfOrCnpj(item.value),
+                    );
+                } else {
+                    textItem = textItem.replace(item.identifier, item.value);
+                }
+            });
+            if (date) {
+                textItem = textItem.replace(
+                    "{{data}}",
+                    Formatter.formatarDataPorExtenso(new Date(date)),
+                );
+            }
+            setText(textItem);
+        }
+    };
+
+    const handleAddDocument = async () => {
+        setErrors([]);
+        const data = documentSchema.safeParse({
+            text,
+            selectedTextId,
+            fieldData,
+            date,
+        });
+        if (!data.success) return setErrors(getErrorFromZod(data.error));
+        setLoading(true);
+        const result = await addDocument({
+            date: data.data.date,
+            documentTypeId: documentType.id,
+            documentTypeTextId: data.data.selectedTextId,
+            text: data.data.text,
+            fields: data.data.fieldData,
+        });
+        setLoading(false);
+        if (typeof result === "string") {
+            addAlert("error", result);
+        } else {
+            addAlert("success", "Adicionado com sucesso!");
+        }
+    };
+
+    const handleDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value + "T00:00:00";
+        setDate(value);
+    };
 
     return (
-        <div className="w-full max-w-4xl mx-auto">
-            <h2 className="text-center mb-5">Criando {documentType.name}</h2>
-            <div className="mb-5 flex gap-4 items-center">
+        <div className="w-full max-w-4xl mx-auto my-5">
+            <h2 className="text-center">Criando {documentType.name}</h2>
+            <button onClick={generate} id="immprimir">
+                IMPRIMIR
+            </button>
+            <div className="mb-5 flex gap-4 items-start">
                 <div className="w-1/3">
                     <label className="block mb-1 pl-1" htmlFor="date">
                         Data
@@ -77,8 +184,8 @@ export const AddDocument = ({ documentType }: Props) => {
                     <InputField
                         id="date"
                         disabled={loading}
-                        //value={nameField}
-                        onChange={(e) => console.log("")}
+                        value={date.split("T")[0]}
+                        onChange={handleDate}
                         placeholder="Digite a data do Documento"
                         type="date"
                         errorMessage={
@@ -92,11 +199,14 @@ export const AddDocument = ({ documentType }: Props) => {
                         Modelos de texto
                     </label>
                     <select
+                        disabled={loading}
                         id="selectedTextId"
                         onChange={(e) =>
                             setSelectedTextId(parseInt(e.target.value))
                         }
-                        className="w-full bg-transparent text-black p-3 outline-none border border-gray-300 rounded-lg"
+                        className={`w-full bg-transparent text-black p-3 outline-none border border-gray-300 rounded-lg ${
+                            selectTextError ? "border-red-600" : ""
+                        }`}
                     >
                         <option value={0}>Selecione um texto</option>
                         {documentType.texts.map((item) => (
@@ -127,28 +237,32 @@ export const AddDocument = ({ documentType }: Props) => {
                     heightFull={true}
                 />
             </div>
-            <div className="mb-5">
-                <label className="block mb-1 pl-1" htmlFor="validityField">
-                    Validade
-                </label>
-                <InputField
-                    id="validityField"
-                    disabled={loading}
-                    value={validityField.toString()}
-                    onChange={(e) => setValidityField(parseInt(e.target.value))}
-                    placeholder="Digite a validade do Documento. (Dias)"
-                    type="number"
-                    errorMessage={
-                        errors.find((item) => item.field === "validityField")
-                            ?.message
-                    }
-                />
+            <div className="mb-5 grid grid-cols-2 gap-4">
+                {fieldData.map((item, index) => (
+                    <div key={index}>
+                        <label
+                            className="block mb-1 pl-1"
+                            htmlFor={item.name.replace(/\s/g, "")}
+                        >
+                            {item.name}
+                        </label>
+                        <InputField
+                            id={item.name.replace(/\s/g, "")}
+                            disabled={loading}
+                            value={item.value}
+                            onChange={(e) =>
+                                handleSetValue(item, e.target.value)
+                            }
+                            type={item.type}
+                        />
+                    </div>
+                ))}
             </div>
             <div>
                 <Button
                     value={loading ? "Adicionando..." : "Adicionar"}
                     disabled={loading}
-                    onClick={() => alert("Fazer")}
+                    onClick={handleAddDocument}
                 />
             </div>
         </div>

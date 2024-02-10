@@ -72,6 +72,7 @@ export const HomePage = () => {
                     <div className="flex flex-col items-center gap-2">
                         {documentTypes.map((item) => (
                             <Link
+                                key={item.id}
                                 href={`/documents/${item.id}/novo`}
                                 className="w-full text-center px-6 py-2 rounded-md cursor-pointer transition-all border border-black hover:bg-black hover:text-white"
                             >
