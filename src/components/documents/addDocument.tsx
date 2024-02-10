@@ -5,26 +5,13 @@ import { ErrorItem } from "@/types/ErrorItem";
 import { Button } from "../Button";
 import { z } from "zod";
 import { getErrorFromZod } from "@/utils/getErrorFromZod";
-import { addDocumentType } from "@/api/documentsTypes";
 import { addAlert } from "@/utils/addAlert";
-import { DocumentType } from "@/types/DocumentType";
-import { DocumentTypeText } from "@/types/DocumentTypeText";
 import { TextField } from "../TextField";
 import { DocumentTypeFull } from "@/types/DocumentTypeFull";
 import { getPDF, addDocument } from "@/api/documents";
-import { DocumentTypeField } from "@/types/DocumentTypeField";
-import { DocumentField } from "@/types/DocumentField";
-import Formatter from "@/utils/formatter";
 
 type Props = {
     documentType: DocumentTypeFull;
-};
-
-type Fields = {
-    name: string;
-    value: string;
-    type: string;
-    identifier: string;
 };
 
 export const AddDocument = ({ documentType }: Props) => {
@@ -36,11 +23,6 @@ export const AddDocument = ({ documentType }: Props) => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
     const [selectTextError, setSelectTextError] = useState("");
-    const [fieldData, setFieldData] = useState<Fields[]>([]);
-
-    useEffect(() => {
-        handleText();
-    }, [fieldData, date, selectedTextId]);
 
     useEffect(() => {
         const textItem = documentType.texts.find(
@@ -52,20 +34,6 @@ export const AddDocument = ({ documentType }: Props) => {
             setText("");
         }
     }, [selectedTextId]);
-
-    useEffect(() => {
-        const fieldsArr: Fields[] = [];
-        for (let i in documentType.documentTypeField) {
-            const item = documentType.documentTypeField[i];
-            fieldsArr.push({
-                name: item.name,
-                value: "",
-                type: item.type,
-                identifier: item.identifier,
-            });
-        }
-        setFieldData(fieldsArr);
-    }, []);
 
     useEffect(() => {
         const err = errors.find(
@@ -84,60 +52,10 @@ export const AddDocument = ({ documentType }: Props) => {
             .transform((str) => new Date(str)),
         selectedTextId: z.number().gt(0, "Selectione o texto"),
         text: z.string().min(1, "Texto não pode ser vazio"),
-        fieldData: z
-            .array(
-                z.object({
-                    name: z.string(),
-                    value: z.string(),
-                    type: z.string(),
-                    identifier: z.string(),
-                }),
-            )
-            .optional(),
     });
 
     const generate = async () => {
         await getPDF();
-    };
-
-    const handleSetValue = (field: Fields, value: string) => {
-        let list = [...fieldData];
-        const index = list.indexOf(field);
-        list[index].value = value;
-        setFieldData(list);
-    };
-
-    const handleText = () => {
-        if (selectedTextId <= 0) return false;
-
-        let textItem = documentType.texts.find(
-            (item) => (item.id = selectedTextId),
-        )?.text as string;
-
-        if (textItem) {
-            fieldData.forEach((item) => {
-                if (
-                    item.name.includes("CPF") ||
-                    item.name.includes("cpf") ||
-                    item.name.includes("cnpj") ||
-                    item.name.includes("CNPJ")
-                ) {
-                    textItem = textItem.replace(
-                        item.identifier,
-                        Formatter.cpfOrCnpj(item.value),
-                    );
-                } else {
-                    textItem = textItem.replace(item.identifier, item.value);
-                }
-            });
-            if (date) {
-                textItem = textItem.replace(
-                    "{{data}}",
-                    Formatter.formatarDataPorExtenso(new Date(date)),
-                );
-            }
-            setText(textItem);
-        }
     };
 
     const handleAddDocument = async () => {
@@ -145,7 +63,6 @@ export const AddDocument = ({ documentType }: Props) => {
         const data = documentSchema.safeParse({
             text,
             selectedTextId,
-            fieldData,
             date,
         });
         if (!data.success) return setErrors(getErrorFromZod(data.error));
@@ -155,7 +72,6 @@ export const AddDocument = ({ documentType }: Props) => {
             documentTypeId: documentType.id,
             documentTypeTextId: data.data.selectedTextId,
             text: data.data.text,
-            fields: data.data.fieldData,
         });
         setLoading(false);
         if (typeof result === "string") {
@@ -236,27 +152,6 @@ export const AddDocument = ({ documentType }: Props) => {
                     }
                     heightFull={true}
                 />
-            </div>
-            <div className="mb-5 grid grid-cols-2 gap-4">
-                {fieldData.map((item, index) => (
-                    <div key={index}>
-                        <label
-                            className="block mb-1 pl-1"
-                            htmlFor={item.name.replace(/\s/g, "")}
-                        >
-                            {item.name}
-                        </label>
-                        <InputField
-                            id={item.name.replace(/\s/g, "")}
-                            disabled={loading}
-                            value={item.value}
-                            onChange={(e) =>
-                                handleSetValue(item, e.target.value)
-                            }
-                            type={item.type}
-                        />
-                    </div>
-                ))}
             </div>
             <div>
                 <Button

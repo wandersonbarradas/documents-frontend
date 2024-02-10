@@ -1,4 +1,3 @@
-import { DocumentField } from "./DocumentField";
 import { DocumentType } from "./DocumentType";
 
 export type Document = {
@@ -9,7 +8,6 @@ export type Document = {
     documentTypeId: number;
     documentTypeTextId: number;
     documentType: DocumentType;
-    fields: DocumentField[];
 };
 
 export type AddDocument = {
@@ -17,5 +15,4 @@ export type AddDocument = {
     documentTypeId: number;
     documentTypeTextId: number;
     text: string;
-    fields?: Omit<DocumentField, "id" | "documentId">[];
 };

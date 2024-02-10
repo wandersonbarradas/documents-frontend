@@ -2,7 +2,6 @@ import { useState } from "react";
 import { DocumentTypeTabInfo } from "./DocumentTypeTabInfo";
 import { DocumentType } from "@/types/DocumentType";
 import { DocumentTypeTabTexts } from "./Texts/DocumentTypeTabText";
-import { DocumentTypeTabFields } from "./Fields/DocumentTypeTabText";
 
 type Props = {
     documentType: DocumentType;
@@ -32,14 +31,6 @@ export const EditDocumentType = ({ refreshAction, documentType }: Props) => {
                 >
                     Textos
                 </div>
-                <div
-                    className={`flex-1 p-3 rounded-br-md rounded-tr-md hover:bg-gray-100 ${
-                        tab === "fields" ? "bg-gray-200" : ""
-                    }`}
-                    onClick={() => setTab("fields")}
-                >
-                    Campos
-                </div>
             </div>
             {tab === "info" && (
                 <DocumentTypeTabInfo
@@ -49,9 +40,6 @@ export const EditDocumentType = ({ refreshAction, documentType }: Props) => {
             )}
             {tab === "texts" && (
                 <DocumentTypeTabTexts documentTypeId={documentType.id} />
-            )}
-            {tab === "fields" && (
-                <DocumentTypeTabFields documentTypeId={documentType.id} />
             )}
         </>
     );

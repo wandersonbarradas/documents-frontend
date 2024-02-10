@@ -13,49 +13,22 @@ export const TableDocumentItem = ({ document }: Props) => {
     const router = useRouter();
 
     useEffect(() => {
-        const text =
-            "A Prefeitura Municipal de Demerval Lobão – PI, Certifica para os devidos fins que se fizerem necessários que o Sra. fulana de tal, cpf: 999.999.999-99, possui um imóvel situado na Rua José Ribeiro, Nº 100, Bairro Centro, zona urbana deste município de Demerval Lobão – PI, CEP: 64.390-000. ";
         const regexName =
             /(?:Sr|Sr\(a\)|Sra|Firma|Empresa|Associação)\.?\s(.*?),/i; // Expressão regular para capturar o nome após "Sr(a)."
         // Expressão regular para capturar o nome após "Sr(a)."
 
-        const matchName = regexName.exec(text);
+        const matchName = regexName.exec(document.text);
         if (matchName && matchName[1]) {
-            const nome = matchName[1];
-            console.log("Nome:", nome);
-        } else {
-            console.log("Nome não encontrado.");
+            let nome = matchName[1];
+            nome = nome.replace(/[^\w\s]/g, "");
+            setName(nome);
         }
         const regexCpfCnpj = /(?:CPF|CNPJ|CPF\/CNPJ)\:?\s(.*?),/i;
-        const matchCpfCnpj = regexCpfCnpj.exec(text);
+        const matchCpfCnpj = regexCpfCnpj.exec(document.text);
         if (matchCpfCnpj && matchCpfCnpj[1]) {
             const cpfCnpj = matchCpfCnpj[1];
-            console.log("CPF/CNPJ:", cpfCnpj);
-        } else {
-            console.log("CPF/CNPJ não encontrado.");
+            setCpfCnpj(cpfCnpj);
         }
-    }, []);
-
-    useEffect(() => {
-        const fieldName = document.fields.find((item) => {
-            if (
-                item.name.toLocaleLowerCase().includes("nome") ||
-                item.name.toLocaleLowerCase().includes("proprietario") ||
-                item.name.toLocaleLowerCase().includes("razão")
-            ) {
-                return item;
-            }
-        });
-        if (fieldName) setName(fieldName?.value);
-        const fieldCpfCnpj = document.fields.find((item) => {
-            if (
-                item.name.toLocaleLowerCase().includes("cpf") ||
-                item.name.toLocaleLowerCase().includes("cnpj")
-            ) {
-                return item;
-            }
-        });
-        if (fieldCpfCnpj) setCpfCnpj(fieldCpfCnpj.value);
     }, []);
 
     const handleClickItem = () => {
