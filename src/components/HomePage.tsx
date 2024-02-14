@@ -1,14 +1,14 @@
 "use client";
 
-import { ItemButton } from "../ItemButton";
+import { ItemButton } from "./ItemButton";
 import { LuPlus } from "react-icons/lu";
 import { LuArrowDownWideNarrow } from "react-icons/lu";
 import { LuFilter } from "react-icons/lu";
 import { Document } from "@/types/Document";
 import * as api from "@/api/documents";
 import { useEffect, useState } from "react";
-import { TableDocuments } from "../TableDocuments";
-import { Modal } from "../Modal";
+import { TableDocuments } from "./TableDocuments";
+import { Modal } from "./Modal";
 import { DocumentType } from "@/types/DocumentType";
 import { getDocumentsTypes } from "@/api/documentsTypes";
 import Link from "next/link";
@@ -73,7 +73,7 @@ export const HomePage = () => {
                         {documentTypes.map((item) => (
                             <Link
                                 key={item.id}
-                                href={`/documents/${item.id}/novo`}
+                                href={`/documentos/${item.id}/novo`}
                                 className="w-full text-center px-6 py-2 rounded-md cursor-pointer transition-all border border-black hover:bg-black hover:text-white"
                             >
                                 {item.name}

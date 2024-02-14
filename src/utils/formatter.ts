@@ -29,6 +29,11 @@ const Formatter = {
     zero(number: number) {
         return number < 10 ? "0" + number : number;
     },
+    number(number: string): string {
+        const [pt1, pt2] = number.split("/");
+        const paddedNumber = pt1.padStart(4, "0");
+        return `${paddedNumber}/${pt2}`;
+    },
     formatarDataPorExtenso(data: Date) {
         const meses = [
             "janeiro",

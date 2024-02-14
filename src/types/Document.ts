@@ -4,7 +4,7 @@ export type Document = {
     id: number;
     number: string;
     text: string;
-    date: Date;
+    date: string;
     documentTypeId: number;
     documentTypeTextId: number;
     documentType: DocumentType;
@@ -15,4 +15,8 @@ export type AddDocument = {
     documentTypeId: number;
     documentTypeTextId: number;
     text: string;
+};
+
+export type UpdateDocument = AddDocument & {
+    number: string;
 };

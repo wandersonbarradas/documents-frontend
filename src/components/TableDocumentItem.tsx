@@ -14,13 +14,12 @@ export const TableDocumentItem = ({ document }: Props) => {
 
     useEffect(() => {
         const regexName =
-            /(?:Sr|Sr\(a\)|Sra|Firma|Empresa|Associação)\.?\s(.*?),/i; // Expressão regular para capturar o nome após "Sr(a)."
-        // Expressão regular para capturar o nome após "Sr(a)."
+            /(?:sr|sra|firma|empresa|associação|espólio do sr|espólio da sra|espólio de)\.?\s([^,]+)/i;
 
         const matchName = regexName.exec(document.text);
         if (matchName && matchName[1]) {
             let nome = matchName[1];
-            nome = nome.replace(/[^\w\s]/g, "");
+            nome = nome.replace(/\*/g, "");
             setName(nome);
         }
         const regexCpfCnpj = /(?:CPF|CNPJ|CPF\/CNPJ)\:?\s(.*?),/i;
@@ -32,7 +31,7 @@ export const TableDocumentItem = ({ document }: Props) => {
     }, []);
 
     const handleClickItem = () => {
-        router.push(`/documents/${document.id}`);
+        router.push(`/documentos/${document.documentTypeId}/${document.id}`);
     };
     return (
         <tr

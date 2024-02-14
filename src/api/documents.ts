@@ -1,4 +1,4 @@
-import { AddDocument, Document } from "@/types/Document";
+import { AddDocument, Document, UpdateDocument } from "@/types/Document";
 import { req } from "./axios";
 import { getCookie } from "cookies-next";
 
@@ -33,10 +33,27 @@ export const addDocument = async (data: AddDocument) => {
     }
 };
 
-export const getPDF = async () => {
+export const updateDocument = async (id: number, data: UpdateDocument) => {
     try {
         const token = getCookie("token");
-        const result = await req.get("/documents/pdf", {
+        const result = await req.put(`/documents/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (result.data?.document) {
+            return result.data.document as Document;
+        }
+        return (result.data.error as string) || "Ops! Algo deu errado!";
+    } catch (error: any) {
+        return "Ops! Algo deu errado! " + error.message;
+    }
+};
+
+export const getPDF = async (id: number) => {
+    try {
+        const token = getCookie("token");
+        const result = await req.get("/documents/pdf/" + id, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

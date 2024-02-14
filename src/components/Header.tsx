@@ -22,7 +22,7 @@ export const Header = () => {
     return (
         <header className="py-4 flex justify-between items-center border-b-2 border-gray-300">
             <Link className="w-12 h-12" href="/">
-                <img className="w-full" src="/logo.png" alt="Logo" />
+                <img className="w-full" src="/img/logo.png" alt="Logo" />
             </Link>
             <nav>
                 <ul className="flex items-center gap-4">
