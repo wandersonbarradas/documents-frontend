@@ -3,7 +3,7 @@
 type Props = {
     type?: string;
     placeholder?: string;
-    value?: string;
+    value?: any;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     disabled?: boolean;

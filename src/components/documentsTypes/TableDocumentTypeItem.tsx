@@ -37,7 +37,10 @@ export const TableDocumentTypeItem = ({
                 {documentType.title}
             </td>
             <td className="py-3 border-r border-gray-300">
-                {Formatter.zero(documentType.validityPeriod)} dias
+                {documentType.expires && (
+                    <>{Formatter.zero(documentType.validity)} dias</>
+                )}
+                {!documentType.expires && <>Sem validade</>}
             </td>
             <td className="py-3">
                 <div className="flex justify-center items-end gap-4">

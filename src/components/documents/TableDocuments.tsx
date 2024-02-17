@@ -31,7 +31,7 @@ export const TableDocuments = ({ documents, loading }: Props) => {
                         <th className="font-medium py-2 border-r border-gray-300">
                             CPF/CNPJ
                         </th>
-                        <th className="font-medium">Actions</th>
+                        <th className="font-medium">Ações</th>
                     </tr>
                 </thead>
                 <tbody>

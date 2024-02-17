@@ -17,10 +17,10 @@ type Props = {
 };
 
 export const UpdateDocument = ({ documentType, document }: Props) => {
-    const [number, setNumber] = useState<string>(document.number);
+    const [number, setNumber] = useState<string | undefined>(document.number);
     const [date, setDate] = useState<string>(document.date);
     const [selectedTextId, setSelectedTextId] = useState<number>(
-        document.documentTypeTextId,
+        document.document_type_text_id,
     );
     const [text, setText] = useState(document.text);
     const [loading, setLoading] = useState(false);
@@ -46,7 +46,9 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
             .transform((str) => new Date(str)),
         selectedTextId: z.number().gt(0, "Selectione o texto"),
         text: z.string().min(1, "Texto não pode ser vazio"),
-        number: z.string().min(6, "Preencha o numero"),
+        number: document.document_type.has_number
+            ? z.string().min(6, "Preencha o numero")
+            : z.string().optional(),
     });
 
     const handleUpdateDocument = async () => {
@@ -61,17 +63,22 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
         setLoading(true);
         const result = await updateDocument(document.id, {
             date: data.data.date,
-            documentTypeId: documentType.id,
-            documentTypeTextId: data.data.selectedTextId,
+            document_type_text_id: data.data.selectedTextId,
             text: data.data.text,
             number: data.data.number,
+            updated_at: new Date(),
         });
         if (typeof result === "string") {
             addAlert("error", result);
             setLoading(false);
         } else {
             addAlert("success", "Alterado com sucesso!");
-            router.replace(`/documentos-emitidos/${result.id}`);
+            const win = window.open(
+                `/documentos-emitidos/${result.id}`,
+                "_blank",
+            );
+            win?.focus();
+            router.replace("/");
         }
     };
 
@@ -98,23 +105,25 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
                 Editando {documentType.name} Nº {document.number}
             </h2>
             <div className="mb-5 flex gap-4 items-start">
-                <div className="w-1/5">
-                    <label className="block mb-1 pl-1" htmlFor="number">
-                        Numero
-                    </label>
-                    <InputField
-                        id="number"
-                        disabled={loading}
-                        value={number}
-                        onChange={(e) => setNumber(e.target.value)}
-                        placeholder="Digite o número do Documento"
-                        type="text"
-                        errorMessage={
-                            errors.find((item) => item.field === "number")
-                                ?.message
-                        }
-                    />
-                </div>
+                {document.document_type.has_number && (
+                    <div className="w-1/5">
+                        <label className="block mb-1 pl-1" htmlFor="number">
+                            Numero
+                        </label>
+                        <InputField
+                            id="number"
+                            disabled={loading}
+                            value={number}
+                            onChange={(e) => setNumber(e.target.value)}
+                            placeholder="Digite o número do Documento"
+                            type="text"
+                            errorMessage={
+                                errors.find((item) => item.field === "number")
+                                    ?.message
+                            }
+                        />
+                    </div>
+                )}
                 <div className="w-1/4">
                     <label className="block mb-1 pl-1" htmlFor="date">
                         Data

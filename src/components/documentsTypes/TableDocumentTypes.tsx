@@ -3,7 +3,7 @@
 import {
     TableDocumentItem,
     TableDocumentPlaceholder,
-} from "../TableDocumentItem";
+} from "../documents/TableDocumentItem";
 import { DocumentType } from "@/types/DocumentType";
 import {
     TableDocumentTypeItem,

@@ -16,9 +16,11 @@ type Props = {
 export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
     const [nameField, setNameField] = useState(documentType.name);
     const [titleField, setTitleField] = useState(documentType.title);
-    const [validityField, setValidityField] = useState(
-        documentType.validityPeriod,
+    const [validityField, setValidityField] = useState(documentType.validity);
+    const [hasNumberField, setHasNumberField] = useState(
+        documentType.has_number,
     );
+    const [expiresField, setExpiresField] = useState(documentType.expires);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
 
@@ -28,9 +30,10 @@ export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
             nameField,
             titleField,
             validityField,
+            expiresField,
         });
         if (!data.success) return setErrors(getErrorFromZod(data.error));
-    }, [nameField, titleField, validityField]);
+    }, [nameField, titleField, validityField, expiresField]);
 
     const documentTypeSchema = z.object({
         nameField: z.string().min(4, "Preencha o nome"),
@@ -38,6 +41,8 @@ export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
         validityField: z
             .number({ invalid_type_error: "Preencha a validade" })
             .min(1, "Preencha a validade"),
+        expiresField: z.boolean(),
+        hasNumberField: z.boolean(),
     });
 
     const handleUpdateDocumentType = async () => {
@@ -45,7 +50,10 @@ export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
         const result = await updateDocumentType(documentType.id, {
             name: nameField,
             title: titleField,
-            validityPeriod: validityField,
+            validity: validityField,
+            expires: expiresField,
+            has_number: hasNumberField,
+            updated_at: new Date(),
         });
         setLoading(false);
         if (typeof result === "string") {
@@ -92,22 +100,56 @@ export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
                     }
                 />
             </div>
-            <div className="mb-5">
-                <label className="block mb-1 pl-1" htmlFor="validityField">
-                    Validade
-                </label>
-                <InputField
-                    id="validityField"
-                    disabled={loading}
-                    value={validityField.toString()}
-                    onChange={(e) => setValidityField(parseInt(e.target.value))}
-                    placeholder="Digite a validade do Documento. (Dias)"
-                    type="number"
-                    errorMessage={
-                        errors.find((item) => item.field === "validityField")
-                            ?.message
-                    }
-                />
+            <div className="mb-5 flex gap-x-16 items-stretch">
+                <div className="flex flex-col items-center flex-1">
+                    <label className="block mb-1 pl-1" htmlFor="hasNumberField">
+                        É numerado?
+                    </label>
+                    <input
+                        id="hasNumberField"
+                        checked={hasNumberField}
+                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3"
+                        type="checkbox"
+                        onChange={() => setHasNumberField(!hasNumberField)}
+                    />
+                </div>
+                <div className="flex flex-col items-center flex-1">
+                    <label className="block mb-1 pl-1" htmlFor="expiresField">
+                        Tem validade?
+                    </label>
+                    <input
+                        id="expiresField"
+                        checked={expiresField}
+                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3"
+                        type="checkbox"
+                        onChange={() => setExpiresField(!expiresField)}
+                    />
+                </div>
+                {expiresField && (
+                    <div className="flex-1">
+                        <label
+                            className="block mb-1 pl-1"
+                            htmlFor="validityField"
+                        >
+                            Validade (dias)
+                        </label>
+                        <InputField
+                            id="validityField"
+                            disabled={loading}
+                            value={validityField.toString()}
+                            onChange={(e) =>
+                                setValidityField(parseInt(e.target.value))
+                            }
+                            placeholder="Digite a validade do Documento. (Dias)"
+                            type="number"
+                            errorMessage={
+                                errors.find(
+                                    (item) => item.field === "validityField",
+                                )?.message
+                            }
+                        />
+                    </div>
+                )}
             </div>
             <div>
                 <Button

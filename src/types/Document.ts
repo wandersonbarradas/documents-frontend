@@ -2,21 +2,30 @@ import { DocumentType } from "./DocumentType";
 
 export type Document = {
     id: number;
-    number: string;
+    number?: string;
     text: string;
     date: string;
-    documentTypeId: number;
-    documentTypeTextId: number;
-    documentType: DocumentType;
+    user_id: number;
+    document_type_id: number;
+    document_type_text_id: number;
+    created_at: string;
+    updated_at: string | null;
+    last_updated_by: number | null;
+    document_type: DocumentType;
 };
 
 export type AddDocument = {
     date: Date;
-    documentTypeId: number;
-    documentTypeTextId: number;
+    document_type_id: number;
+    document_type_text_id: number;
     text: string;
+    created_at: Date;
 };
 
-export type UpdateDocument = AddDocument & {
-    number: string;
+export type UpdateDocument = Omit<
+    AddDocument,
+    "document_type_id" | "created_at"
+> & {
+    number?: string;
+    updated_at: Date;
 };

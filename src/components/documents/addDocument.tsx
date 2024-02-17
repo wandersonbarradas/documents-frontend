@@ -8,7 +8,7 @@ import { getErrorFromZod } from "@/utils/getErrorFromZod";
 import { addAlert } from "@/utils/addAlert";
 import { TextField } from "../TextField";
 import { DocumentTypeFull } from "@/types/DocumentTypeFull";
-import { getPDF, addDocument } from "@/api/documents";
+import { addDocument } from "@/api/documents";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -57,10 +57,6 @@ export const AddDocument = ({ documentType }: Props) => {
         text: z.string().min(1, "Texto não pode ser vazio"),
     });
 
-    const generate = async () => {
-        await getPDF();
-    };
-
     const handleAddDocument = async () => {
         setErrors([]);
         const data = documentSchema.safeParse({
@@ -72,16 +68,22 @@ export const AddDocument = ({ documentType }: Props) => {
         setLoading(true);
         const result = await addDocument({
             date: data.data.date,
-            documentTypeId: documentType.id,
-            documentTypeTextId: data.data.selectedTextId,
+            document_type_id: documentType.id,
+            document_type_text_id: data.data.selectedTextId,
             text: data.data.text,
+            created_at: new Date(),
         });
         if (typeof result === "string") {
             addAlert("error", result);
             setLoading(false);
         } else {
             addAlert("success", "Adicionado com sucesso!");
-            router.replace(`/documentos-emitidos/${result.id}`);
+            const win = window.open(
+                `/documentos-emitidos/${result.id}`,
+                "_blank",
+            );
+            win?.focus();
+            router.replace("/");
         }
     };
 
@@ -93,9 +95,6 @@ export const AddDocument = ({ documentType }: Props) => {
     return (
         <div className="w-full max-w-4xl mx-auto my-5">
             <h2 className="text-center">Criando {documentType.name}</h2>
-            <button onClick={generate} id="immprimir">
-                IMPRIMIR
-            </button>
             <div className="mb-5 flex gap-4 items-start">
                 <div className="w-1/3">
                     <label className="block mb-1 pl-1" htmlFor="date">

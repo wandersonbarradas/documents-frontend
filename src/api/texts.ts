@@ -1,6 +1,10 @@
 import { req } from "./axios";
 import { getCookie } from "cookies-next";
-import { DocumentTypeText } from "@/types/DocumentTypeText";
+import {
+    AddDocumentTypeText,
+    DocumentTypeText,
+    UpdateDocumentTypeText,
+} from "@/types/DocumentTypeText";
 
 export const getTexts = async (documentTypeId: number) => {
     try {
@@ -21,7 +25,7 @@ export const getTexts = async (documentTypeId: number) => {
 
 export const addText = async (
     documentTypeId: number,
-    data: Omit<DocumentTypeText, "id" | "documentTypeId">,
+    data: AddDocumentTypeText,
 ) => {
     try {
         const token = getCookie("token");
@@ -67,7 +71,7 @@ export const deleteText = async (id: number, documentTypeId: number) => {
 export const updateText = async (
     id: number,
     documentTypeId: number,
-    data: Omit<DocumentTypeText, "id" | "documentTypeId">,
+    data: UpdateDocumentTypeText,
 ) => {
     try {
         const token = getCookie("token");

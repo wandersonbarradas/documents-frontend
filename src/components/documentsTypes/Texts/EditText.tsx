@@ -35,9 +35,10 @@ export const EditText = ({ text, refreshAction, cancelEdit }: Props) => {
     const handleUpdateText = async () => {
         if (errors.length > 0) return false;
         setLoading(true);
-        const result = await updateText(text.id, text.documentTypeId, {
+        const result = await updateText(text.id, text.document_type_id, {
             name: nameField,
             text: textField,
+            updated_at: new Date(),
         });
         setLoading(false);
         if (typeof result === "string") {

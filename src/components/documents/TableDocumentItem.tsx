@@ -13,6 +13,7 @@ export const TableDocumentItem = ({ document }: Props) => {
     const router = useRouter();
 
     useEffect(() => {
+        console.log(typeof document.number);
         const regexName =
             /(?:sr|sra|firma|empresa|associação|espólio do sr|espólio da sra|espólio de)\.?\s([^,]+)/i;
 
@@ -31,7 +32,8 @@ export const TableDocumentItem = ({ document }: Props) => {
     }, []);
 
     const handleClickItem = () => {
-        router.push(`/documentos/${document.documentTypeId}/${document.id}`);
+        router.push(`/documentos/${document.document_type_id}/${document.id}`);
+        router.refresh();
     };
     return (
         <tr
@@ -39,12 +41,14 @@ export const TableDocumentItem = ({ document }: Props) => {
             key={document.id}
             onDoubleClick={handleClickItem}
         >
-            <td className="py-2 border-r border-gray-300">{document.number}</td>
+            <td className="py-2 border-r border-gray-300">
+                {document.number && Formatter.number(document.number)}
+            </td>
             <td className="py-2 border-r border-gray-300">
                 {Formatter.date(document.date)}
             </td>
             <td className="py-2 border-r border-gray-300">
-                {document.documentType.name}
+                {document.document_type.name}
             </td>
             <td className="py-2 border-r border-gray-300">{name}</td>
             <td className="py-2 border-r border-gray-300">

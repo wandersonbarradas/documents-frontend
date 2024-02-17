@@ -33,6 +33,7 @@ export const AddText = ({ documentTypeId, refreshAction }: Props) => {
         const result = await addText(documentTypeId, {
             name: data.data.nameField,
             text: data.data.textField,
+            created_at: new Date(),
         });
         setLoading(false);
         if (typeof result === "string") {

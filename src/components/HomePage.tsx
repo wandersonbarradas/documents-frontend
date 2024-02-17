@@ -7,7 +7,7 @@ import { LuFilter } from "react-icons/lu";
 import { Document } from "@/types/Document";
 import * as api from "@/api/documents";
 import { useEffect, useState } from "react";
-import { TableDocuments } from "./TableDocuments";
+import { TableDocuments } from "./documents/TableDocuments";
 import { Modal } from "./Modal";
 import { DocumentType } from "@/types/DocumentType";
 import { getDocumentsTypes } from "@/api/documentsTypes";

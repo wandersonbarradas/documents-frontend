@@ -1,6 +1,10 @@
 import { req } from "./axios";
 import { getCookie } from "cookies-next";
-import { DocumentType } from "@/types/DocumentType";
+import {
+    AddDocumentType,
+    DocumentType,
+    UpdateDocumentType,
+} from "@/types/DocumentType";
 
 export const getDocumentsTypes = async () => {
     try {
@@ -16,7 +20,7 @@ export const getDocumentsTypes = async () => {
     }
 };
 
-export const addDocumentType = async (data: Omit<DocumentType, "id">) => {
+export const addDocumentType = async (data: AddDocumentType) => {
     try {
         const token = getCookie("token");
         const result = await req.post("/documents-types", data, {
@@ -35,7 +39,7 @@ export const addDocumentType = async (data: Omit<DocumentType, "id">) => {
 
 export const updateDocumentType = async (
     id: number,
-    data: Omit<DocumentType, "id">,
+    data: UpdateDocumentType,
 ) => {
     try {
         const token = getCookie("token");

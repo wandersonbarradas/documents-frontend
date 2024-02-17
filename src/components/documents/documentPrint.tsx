@@ -4,13 +4,14 @@ import { Document } from "@/types/Document";
 import { getPDF } from "@/api/documents";
 import Formatter from "@/utils/formatter";
 import extenso from "extenso";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
     document: Document;
 };
 
 export const DocumentPrint = ({ document }: Props) => {
+    const [size, setSize] = useState(document.text.length);
     const handlePrint = async () => {
         await getPDF(document.id);
     };
@@ -38,14 +39,18 @@ export const DocumentPrint = ({ document }: Props) => {
             <div className="min-h-screen bg-[url('/img/Imagem2.jpg')] bg-no-repeat bg-contain bg-center relative">
                 <div
                     id="box"
-                    className="absolute top-0 left-0 right-0 bottom-0 pt-16 text-center bg-white/90"
+                    className={`absolute top-0 left-0 right-0 bottom-0 ${
+                        size > 600 ? "pt-16" : "pt-52"
+                    } text-center bg-white/90`}
                 >
                     <div className="w-full max-w-xl mx-auto">
                         <div className="mb-20 text-sm">
                             <b>
                                 {" "}
-                                {document.documentType.title} -{" "}
-                                {Formatter.number(document.number)}
+                                {document.document_type.title}
+                                {document.document_type.has_number && (
+                                    <> - {Formatter.number(document.number)}</>
+                                )}
                             </b>
                         </div>
                         <p
@@ -57,13 +62,15 @@ export const DocumentPrint = ({ document }: Props) => {
                             }}
                             className="text-sm text-justify"
                         ></p>
-                        <p className="text-sm mb-10">
-                            A presente Certidão tem validade de{" "}
-                            {document.documentType.validityPeriod} (
-                            {extenso(document.documentType.validityPeriod)})
-                            dias.
-                        </p>
-                        <div className="text-sm ">
+                        {document.document_type.expires && (
+                            <p className="text-sm">
+                                O presente Documento tem validade de{" "}
+                                {document.document_type.validity} (
+                                {extenso(document.document_type.validity)})
+                                dias.
+                            </p>
+                        )}
+                        <div className="text-sm mt-10">
                             Demerval Lobão,{" "}
                             {Formatter.formatarDataPorExtenso(
                                 new Date(document.date),

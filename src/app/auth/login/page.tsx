@@ -123,7 +123,7 @@ const page = () => {
                         className="max-w-xl"
                         width={2000}
                         height={2000}
-                        src="/loginImage.jpg"
+                        src="/img/loginImage.jpg"
                         alt="Imagem ilustrativas de documentos"
                         priority={true}
                     ></Image>

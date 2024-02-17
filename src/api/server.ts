@@ -16,7 +16,6 @@ export const isLoggedIn = async () => {
         });
         return true;
     } catch (error) {
-        console.log("🚀 ~ isLoggedIn ~ error:", error);
         return false;
     }
 };
