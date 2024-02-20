@@ -85,7 +85,11 @@ export const EditText = ({ text, refreshAction, cancelEdit }: Props) => {
                             ?.message
                     }
                 /> */}
-                <Editor value={textField} onChange={(e) => setTextField(e)} />
+                <Editor
+                    value={textField}
+                    onChange={(e) => setTextField(e)}
+                    disabled={loading}
+                />
             </div>
             <div className="flex gap-4">
                 <Button

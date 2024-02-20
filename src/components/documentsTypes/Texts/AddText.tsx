@@ -81,7 +81,11 @@ export const AddText = ({ documentTypeId, refreshAction }: Props) => {
                             ?.message
                     }
                 /> */}
-                <Editor onChange={(e) => setTextField(e)} value={textField} />
+                <Editor
+                    onChange={(e) => setTextField(e)}
+                    value={textField}
+                    disabled={loading}
+                />
             </div>
             <div>
                 <Button

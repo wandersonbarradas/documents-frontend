@@ -4,7 +4,7 @@ import { useRef } from "react";
 type Props = {
     value?: string;
     onChange: (text: string) => void;
-    disabled: boolean;
+    disabled?: boolean;
 };
 
 export const Editor = ({ value, onChange, disabled }: Props) => {

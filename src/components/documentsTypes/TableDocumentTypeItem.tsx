@@ -4,6 +4,8 @@ import { LuTrash2 } from "react-icons/lu";
 import { DocumentType } from "@/types/DocumentType";
 import { deleteDocumentType } from "@/api/documentsTypes";
 import { addAlert } from "@/utils/addAlert";
+import { useState } from "react";
+import { ModalDelete } from "../ModalDelete";
 
 type Props = {
     documentType: DocumentType;
@@ -16,50 +18,58 @@ export const TableDocumentTypeItem = ({
     refreshAction,
     onEdit: openModal,
 }: Props) => {
+    const [modalDelete, setModalDelete] = useState(false);
     const handleDeleteDocumentType = async () => {
-        if (confirm("Deseja realmente deletar este documeto?")) {
-            const result = await deleteDocumentType(documentType.id);
-            if (typeof result === "string") {
-                addAlert("error", result);
-            } else {
-                addAlert("success", "Excluido com sucesso!");
-                refreshAction();
-            }
+        setModalDelete(false);
+        const result = await deleteDocumentType(documentType.id);
+        if (typeof result === "string") {
+            addAlert("error", result);
+        } else {
+            addAlert("success", "Excluido com sucesso!");
+            refreshAction();
         }
     };
 
     return (
-        <tr className="text-center border-b border-gray-300 dark:border-gray-600 cursor-pointer transition-all hover:bg-gray-200 dark:hover:bg-gray-700">
-            <td className="py-2 border-r border-gray-300 dark:border-gray-600">
-                {documentType.name}
-            </td>
-            <td className="py-2 border-r border-gray-300 dark:border-gray-600">
-                {documentType.title}
-            </td>
-            <td className="py-2 border-r border-gray-300 dark:border-gray-600">
-                {documentType.expires && (
-                    <>{Formatter.zero(documentType.validity)} dias</>
-                )}
-                {!documentType.expires && <>Sem validade</>}
-            </td>
-            <td className="py-2">
-                <div className="flex justify-center items-end gap-4">
-                    <div
-                        className="p-1 rounded-lg text-lg border transition-all border-gray-300 dark:border-gray-600 hover:bg-gray-800 dark:hover:bg-gray-600 hover:text-white"
-                        onClick={() => openModal(documentType)}
-                    >
-                        <LuFileEdit />
-                    </div>
+        <>
+            <tr className="text-center border-b border-gray-300 dark:border-gray-600 cursor-pointer transition-all hover:bg-gray-200 dark:hover:bg-gray-700">
+                <td className="py-2 border-r border-gray-300 dark:border-gray-600">
+                    {documentType.name}
+                </td>
+                <td className="py-2 border-r border-gray-300 dark:border-gray-600">
+                    {documentType.title}
+                </td>
+                <td className="py-2 border-r border-gray-300 dark:border-gray-600">
+                    {documentType.expires && (
+                        <>{Formatter.zero(documentType.validity)} dias</>
+                    )}
+                    {!documentType.expires && <>Sem validade</>}
+                </td>
+                <td className="py-2">
+                    <div className="flex justify-center items-end gap-4">
+                        <div
+                            className="p-1 rounded-lg text-lg border transition-all border-gray-300 dark:border-gray-600 hover:bg-gray-800 dark:hover:bg-gray-600 hover:text-white"
+                            onClick={() => openModal(documentType)}
+                        >
+                            <LuFileEdit />
+                        </div>
 
-                    <div
-                        className="p-1 rounded-lg text-lg border transition-all border-gray-300 dark:border-gray-600 hover:bg-gray-800 dark:hover:bg-gray-600 hover:text-white"
-                        onClick={handleDeleteDocumentType}
-                    >
-                        <LuTrash2 />
+                        <div
+                            className="p-1 rounded-lg text-lg border transition-all border-gray-300 dark:border-gray-600 hover:bg-gray-800 dark:hover:bg-gray-600 hover:text-white"
+                            onClick={() => setModalDelete(true)}
+                        >
+                            <LuTrash2 />
+                        </div>
                     </div>
-                </div>
-            </td>
-        </tr>
+                </td>
+            </tr>
+            {modalDelete && (
+                <ModalDelete
+                    onClose={() => setModalDelete(false)}
+                    onDelete={handleDeleteDocumentType}
+                />
+            )}
+        </>
     );
 };
 

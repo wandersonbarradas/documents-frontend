@@ -4,6 +4,8 @@ import { deleteText } from "@/api/texts";
 import { addAlert } from "@/utils/addAlert";
 import { DocumentTypeText } from "@/types/DocumentTypeText";
 import { ItemButton } from "../../ItemButton";
+import { useState } from "react";
+import { ModalDelete } from "@/components/ModalDelete";
 
 type Props = {
     text: DocumentTypeText;
@@ -12,34 +14,42 @@ type Props = {
 };
 
 export const TextItem = ({ text, refreshAction, onEdit }: Props) => {
+    const [modalDelete, setModalDelete] = useState(false);
     const handleDeleteText = async () => {
-        if (confirm("Deseja realmente deletar este texto?")) {
-            const result = await deleteText(text.id, text.document_type_id);
-            if (typeof result === "string") {
-                addAlert("error", result);
-            } else {
-                addAlert("success", "Excluido com sucesso!");
-                refreshAction();
-            }
+        setModalDelete(false);
+        const result = await deleteText(text.id, text.document_type_id);
+        if (typeof result === "string") {
+            addAlert("error", result);
+        } else {
+            addAlert("success", "Excluido com sucesso!");
+            refreshAction();
         }
     };
 
     return (
-        <div className="border border-gray-300 dark:border-gray-600 rounded p-3 mb-3 flex items-center transition-all hover:bg-gray-200 dark:hover:bg-gray-700">
-            <div className="flex-1">{text.name}</div>
-            <div className="flex gap-6">
-                <ItemButton
-                    IconElement={LuFileEdit}
-                    onClick={() => onEdit(text)}
-                    classNames="border border-gray-200 dark:border-gray-600 hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white"
-                />
-                <ItemButton
-                    IconElement={LuTrash2}
-                    onClick={handleDeleteText}
-                    classNames="border border-gray-200 dark:border-gray-600 hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white"
-                />
+        <>
+            <div className="border border-gray-300 dark:border-gray-600 rounded p-3 mb-3 flex items-center transition-all hover:bg-gray-200 dark:hover:bg-gray-700">
+                <div className="flex-1">{text.name}</div>
+                <div className="flex gap-6">
+                    <ItemButton
+                        IconElement={LuFileEdit}
+                        onClick={() => onEdit(text)}
+                        classNames="border border-gray-200 dark:border-gray-600 hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white"
+                    />
+                    <ItemButton
+                        IconElement={LuTrash2}
+                        onClick={() => setModalDelete(true)}
+                        classNames="border border-gray-200 dark:border-gray-600 hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white"
+                    />
+                </div>
             </div>
-        </div>
+            {modalDelete && (
+                <ModalDelete
+                    onClose={() => setModalDelete(false)}
+                    onDelete={handleDeleteText}
+                />
+            )}
+        </>
     );
 };
 
