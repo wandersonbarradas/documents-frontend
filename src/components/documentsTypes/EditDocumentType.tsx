@@ -16,16 +16,16 @@ export const EditDocumentType = ({ refreshAction, documentType }: Props) => {
         <>
             <div className="flex text-center border-b border-black cursor-pointer rounded-bl-md rounded-br-md">
                 <div
-                    className={`flex-1 p-3 rounded-bl-md rounded-tl-md hover:bg-gray-100 ${
-                        tab === "info" ? "bg-gray-200" : ""
+                    className={`flex-1 p-3 rounded-bl-md rounded-tl-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all ${
+                        tab === "info" ? "bg-gray-200 dark:bg-gray-700" : ""
                     }`}
                     onClick={() => setTab("info")}
                 >
                     Informações
                 </div>
                 <div
-                    className={`flex-1 p-3 hover:bg-gray-100 ${
-                        tab === "texts" ? "bg-gray-200" : ""
+                    className={`flex-1 p-3 rounded-br-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all ${
+                        tab === "texts" ? "bg-gray-200 dark:bg-gray-700" : ""
                     }`}
                     onClick={() => setTab("texts")}
                 >

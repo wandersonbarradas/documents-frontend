@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { InputField } from "../InputField";
 import { ErrorItem } from "@/types/ErrorItem";
 import { Button } from "../Button";
@@ -10,33 +10,32 @@ import { TextField } from "../TextField";
 import { DocumentTypeFull } from "@/types/DocumentTypeFull";
 import { addDocument } from "@/api/documents";
 import { useRouter } from "next/navigation";
+import { Editor } from "../Editor";
+import { Document } from "@/types/Document";
 
 type Props = {
     documentType: DocumentTypeFull;
+    document?: Document;
 };
 
-export const AddDocument = ({ documentType }: Props) => {
+export const AddDocument = ({ documentType, document }: Props) => {
     const [date, setDate] = useState<string>(
         new Date().toISOString().split("T")[0] + "T00:00:00",
     );
-    const [selectedTextId, setSelectedTextId] = useState<number>(0);
-    const [text, setText] = useState("");
+    const [selectedTextId, setSelectedTextId] = useState<number>(
+        document?.document_type_text_id ?? 0,
+    );
+    const [text, setText] = useState(document?.text ?? "");
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
     const [selectTextError, setSelectTextError] = useState("");
+    const [shouldRender, setShouldRender] = useState(false);
 
     const router = useRouter();
 
     useEffect(() => {
-        const textItem = documentType.texts.find(
-            (item) => item.id === selectedTextId,
-        );
-        if (textItem) {
-            setText(textItem.text);
-        } else {
-            setText("");
-        }
-    }, [selectedTextId]);
+        setShouldRender(true);
+    }, []);
 
     useEffect(() => {
         const err = errors.find(
@@ -78,12 +77,7 @@ export const AddDocument = ({ documentType }: Props) => {
             setLoading(false);
         } else {
             addAlert("success", "Adicionado com sucesso!");
-            const win = window.open(
-                `/documentos-emitidos/${result.id}`,
-                "_blank",
-            );
-            win?.focus();
-            router.replace("/");
+            router.replace(`/documentos/${documentType.id}/${result.id}`);
         }
     };
 
@@ -92,10 +86,24 @@ export const AddDocument = ({ documentType }: Props) => {
         setDate(value);
     };
 
+    const handleSelectText = (e: ChangeEvent<HTMLSelectElement>) => {
+        setSelectedTextId(parseInt(e.target.value));
+        const textItem = documentType.texts.find(
+            (item) => item.id === parseInt(e.target.value),
+        );
+        if (textItem) {
+            setText(textItem.text);
+        } else {
+            setText("");
+        }
+    };
+
     return (
         <div className="w-full max-w-4xl mx-auto my-5">
-            <h2 className="text-center">Criando {documentType.name}</h2>
-            <div className="mb-5 flex gap-4 items-start">
+            <h4 className="text-xl text-center mb-7">
+                Criando {documentType.name}
+            </h4>
+            <div className="mb-5 flex gap-4 items-center">
                 <div className="w-1/3">
                     <label className="block mb-1 pl-1" htmlFor="date">
                         Data
@@ -120,12 +128,13 @@ export const AddDocument = ({ documentType }: Props) => {
                     <select
                         disabled={loading}
                         id="selectedTextId"
-                        onChange={(e) =>
-                            setSelectedTextId(parseInt(e.target.value))
-                        }
-                        className={`w-full bg-transparent text-black p-3 outline-none border border-gray-300 rounded-lg ${
-                            selectTextError ? "border-red-600" : ""
+                        onChange={handleSelectText}
+                        className={`w-full h-[52px] bg-gray-50 dark:bg-gray-900 p-3 outline-none border rounded-lg disabled:bg-transparent disabled:text-gray-400 disabled:cursor-not-allowed ${
+                            selectTextError
+                                ? "border-red-600"
+                                : "border-gray-300 dark:border-gray-600 focus:border-green-400"
                         }`}
+                        value={selectedTextId}
                     >
                         <option value={0}>Selecione um texto</option>
                         {documentType.texts.map((item) => (
@@ -143,9 +152,9 @@ export const AddDocument = ({ documentType }: Props) => {
             </div>
             <div className="mb-5">
                 <label className="block mb-1 pl-1" htmlFor="text">
-                    Textos
+                    Texto
                 </label>
-                <TextField
+                {/* <TextField
                     id="text"
                     disabled={loading}
                     value={text}
@@ -154,13 +163,27 @@ export const AddDocument = ({ documentType }: Props) => {
                         errors.find((item) => item.field === "text")?.message
                     }
                     heightFull={true}
-                />
+                /> */}
+                {text && shouldRender && (
+                    <Editor
+                        onChange={(e) => setText(e)}
+                        value={text}
+                        disabled={loading}
+                    />
+                )}
             </div>
-            <div>
+            <div className="flex gap-4">
+                <Button
+                    value="Cancelar"
+                    disabled={loading}
+                    onClick={() => router.replace("/")}
+                    type="cancel"
+                />
                 <Button
                     value={loading ? "Adicionando..." : "Adicionar"}
                     disabled={loading}
                     onClick={handleAddDocument}
+                    type="add"
                 />
             </div>
         </div>

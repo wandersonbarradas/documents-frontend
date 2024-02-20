@@ -20,7 +20,7 @@ export const Header = () => {
     };
 
     return (
-        <header className="py-4 flex justify-between items-center border-b-2 border-gray-300">
+        <header className="py-4 flex justify-between items-center border-b-2 border-gray-300 dark:border-gray-600">
             <Link className="w-12 h-12" href="/">
                 <img className="w-full" src="/img/logo.png" alt="Logo" />
             </Link>
@@ -31,7 +31,11 @@ export const Header = () => {
                             href="/"
                             label="Inicio"
                             IconElement={LuHome}
-                            active={verifyPathname("/", pathname)}
+                            classNames={`${
+                                verifyPathname("/", pathname)
+                                    ? "text-sky-600"
+                                    : "text-black dark:text-white"
+                            } hover:text-sky-600`}
                         />
                     </li>
                     <li>
@@ -39,7 +43,11 @@ export const Header = () => {
                             href="/configuracoes"
                             label="Configurações"
                             IconElement={LuSettings}
-                            active={verifyPathname("/configuracoes", pathname)}
+                            classNames={`${
+                                verifyPathname("/configuracoes", pathname)
+                                    ? "text-sky-600"
+                                    : "text-black dark:text-white"
+                            } hover:text-sky-600`}
                         />
                     </li>
                 </ul>
@@ -49,6 +57,7 @@ export const Header = () => {
                 onClick={() => handleLogOut()}
                 label="Sair"
                 IconElement={LuLogOut}
+                classNames={`text-black dark:text-white hover:text-sky-600`}
             />
         </header>
     );

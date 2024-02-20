@@ -9,7 +9,8 @@ type Props = {
     onClick?: () => void;
     href?: string;
     target?: string;
-    active?: boolean;
+    classNames: string;
+    disabled?: boolean;
 };
 
 export const ItemButton = ({
@@ -18,7 +19,8 @@ export const ItemButton = ({
     onClick,
     href,
     target,
-    active,
+    classNames,
+    disabled,
 }: Props) => {
     const content = (
         <div className="font-medium p-2 flex flex-col justify-center items-center gap-2 md:flex-row">
@@ -28,21 +30,27 @@ export const ItemButton = ({
             {label && <div>{label}</div>}
         </div>
     );
+
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (disabled) {
+            e.preventDefault();
+        }
+    };
+
+    const handleBtnClick = () => {
+        if (!disabled && onClick) {
+            onClick();
+        }
+    };
     return (
-        <div
-            className={`border border-black rounded-lg transition-all ${
-                active
-                    ? "text-white bg-black hover:bg-white hover:text-black"
-                    : "text-black bg-white hover:bg-black hover:text-white"
-            }`}
-        >
+        <div className={`rounded-lg transition-all font-normal ${classNames}`}>
             {href && !onClick && (
-                <Link href={href} target={target}>
+                <Link href={href} target={target} onClick={handleLinkClick}>
                     {content}
                 </Link>
             )}
             {!href && onClick && (
-                <div onClick={onClick} className="cursor-pointer">
+                <div onClick={handleBtnClick} className="cursor-pointer">
                     {content}
                 </div>
             )}

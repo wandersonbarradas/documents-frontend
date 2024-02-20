@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Poppins } from "next/font/google";
+import { Roboto } from "next/font/google";
 import { Header } from "@/components/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const poppins = Poppins({
+const poppins = Roboto({
     subsets: ["latin"],
-    weight: ["500", "400", "600", "700"],
+    weight: ["500", "400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -22,7 +22,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="pt-br">
-            <body className={`${poppins.className} px-4`}>
+            <body
+                className={`${poppins.className} px-4 bg-gray-100 text-black dark:bg-gray-950 dark:text-white`}
+            >
                 <>
                     {children}
                     <ToastContainer />

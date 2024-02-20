@@ -7,7 +7,7 @@ import { addAlert } from "@/utils/addAlert";
 import { InputField } from "@/components/InputField";
 import { Button } from "@/components/Button";
 import { TextField } from "@/components/TextField";
-
+import { Editor } from "@/components/Editor";
 type Props = {
     documentTypeId: number;
     refreshAction: () => void;
@@ -70,7 +70,7 @@ export const AddText = ({ documentTypeId, refreshAction }: Props) => {
                 <label className="block mb-1 pl-1" htmlFor="textField">
                     Texto
                 </label>
-                <TextField
+                {/* <TextField
                     id="textField"
                     disabled={loading}
                     value={textField}
@@ -80,13 +80,15 @@ export const AddText = ({ documentTypeId, refreshAction }: Props) => {
                         errors.find((item) => item.field === "textField")
                             ?.message
                     }
-                />
+                /> */}
+                <Editor onChange={(e) => setTextField(e)} value={textField} />
             </div>
             <div>
                 <Button
                     value={loading ? "Adicionando..." : "Adicionar"}
                     disabled={loading}
                     onClick={handleAddText}
+                    type="add"
                 />
             </div>
         </div>

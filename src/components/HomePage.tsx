@@ -45,27 +45,33 @@ export const HomePage = () => {
             <h1 className="text-xl font-medium ml-3 mb-3">
                 Lista de documentos
             </h1>
-            <div className="border border-gray-300 rounded-2xl">
-                <div className="flex justify-end p-4 border-b border-gray-300">
+            <div className="border border-gray-300 rounded-2xl bg-white dark:bg-gray-800 dark:border-gray-600">
+                <div className="flex justify-end p-4 border-b border-gray-300 dark:border-gray-600">
                     <ItemButton
                         IconElement={LuPlus}
                         onClick={() => setNewDocumentModal(true)}
                         //href="/documents/novo"
                         label="Novo"
-                        active
+                        classNames={`text-white bg-green-400 hover:bg-green-600`}
                     />
                 </div>
-                <div className="flex justify-end p-4 border-b border-gray-300 gap-4">
+                <div className="flex justify-end p-4 border-b gap-4 border-gray-300 dark:border-gray-600 ">
                     <ItemButton
                         IconElement={LuFilter}
                         onClick={handleAddButton}
+                        classNames={`text-black dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700`}
                     />
                     <ItemButton
                         IconElement={LuArrowDownWideNarrow}
                         onClick={handleAddButton}
+                        classNames={`text-black dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700`}
                     />
                 </div>
-                <TableDocuments documents={documents} loading={loading} />
+                <TableDocuments
+                    documents={documents}
+                    loading={loading}
+                    refreshAction={loadDocuments}
+                />
             </div>
             {newDocumentModal && (
                 <Modal onClose={() => setNewDocumentModal(false)}>
@@ -74,7 +80,7 @@ export const HomePage = () => {
                             <Link
                                 key={item.id}
                                 href={`/documentos/${item.id}/novo`}
-                                className="w-full text-center px-6 py-2 rounded-md cursor-pointer transition-all border border-black hover:bg-black hover:text-white"
+                                className="w-full text-center px-6 py-2 rounded-md cursor-pointer transition-all border border-gray-300 hover:bg-green-400 hover:text-white dark:border-gray-600"
                             >
                                 {item.name}
                             </Link>

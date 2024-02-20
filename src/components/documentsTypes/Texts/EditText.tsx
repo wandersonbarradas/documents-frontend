@@ -8,6 +8,7 @@ import { InputField } from "@/components/InputField";
 import { Button } from "@/components/Button";
 import { TextField } from "@/components/TextField";
 import { DocumentTypeText } from "@/types/DocumentTypeText";
+import { Editor } from "@/components/Editor";
 
 type Props = {
     text: DocumentTypeText;
@@ -73,7 +74,7 @@ export const EditText = ({ text, refreshAction, cancelEdit }: Props) => {
                 <label className="block mb-1 pl-1" htmlFor="textField">
                     Texto
                 </label>
-                <TextField
+                {/* <TextField
                     id="textField"
                     disabled={loading}
                     value={textField}
@@ -83,18 +84,21 @@ export const EditText = ({ text, refreshAction, cancelEdit }: Props) => {
                         errors.find((item) => item.field === "textField")
                             ?.message
                     }
-                />
+                /> */}
+                <Editor value={textField} onChange={(e) => setTextField(e)} />
             </div>
             <div className="flex gap-4">
                 <Button
                     value="Cancelar"
                     disabled={loading}
                     onClick={cancelEdit}
+                    type="cancel"
                 />
                 <Button
                     value={loading ? "Salvando..." : "Salvar"}
                     disabled={loading}
                     onClick={handleUpdateText}
+                    type="add"
                 />
             </div>
         </div>

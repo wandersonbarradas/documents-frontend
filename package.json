@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tinymce/tinymce-react": "^4.3.2",
     "axios": "^1.6.5",
     "cookies-next": "^4.1.0",
     "extenso": "^2.0.1",

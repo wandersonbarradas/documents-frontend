@@ -102,7 +102,7 @@ export const AddDocumentType = ({ refreshAction }: Props) => {
                     <input
                         id="hasNumberField"
                         checked={hasNumberField}
-                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3"
+                        className="text-white transition-all duration-500 ease-in-out w-6 h-6 mt-3 accent-green-400"
                         type="checkbox"
                         onChange={() => setHasNumberField(!hasNumberField)}
                     />
@@ -114,7 +114,7 @@ export const AddDocumentType = ({ refreshAction }: Props) => {
                     <input
                         id="expiresField"
                         checked={expiresField}
-                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3"
+                        className="text-white transition-all duration-500 ease-in-out w-6 h-6 mt-3 accent-green-400 "
                         type="checkbox"
                         onChange={() => setExpiresField(!expiresField)}
                     />
@@ -150,6 +150,7 @@ export const AddDocumentType = ({ refreshAction }: Props) => {
                     value={loading ? "Adicionando..." : "Adicionar"}
                     disabled={loading}
                     onClick={handleAddDocumentType}
+                    type="add"
                 />
             </div>
         </div>

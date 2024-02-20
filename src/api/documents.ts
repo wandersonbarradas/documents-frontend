@@ -50,6 +50,23 @@ export const updateDocument = async (id: number, data: UpdateDocument) => {
     }
 };
 
+export const deleteDocument = async (id: number) => {
+    try {
+        const token = getCookie("token");
+        const result = await req.delete(`/documents/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (result.data?.document) {
+            return result.data.document as Document;
+        }
+        return (result.data.error as string) || "Ops! Algo deu errado!";
+    } catch (error: any) {
+        return "Ops! Algo deu errado! " + error.message;
+    }
+};
+
 export const getPDF = async (id: number) => {
     try {
         const token = getCookie("token");
@@ -67,9 +84,10 @@ export const getPDF = async (id: number) => {
             const url = window.URL.createObjectURL(blob);
             window.open(url);
         } else {
-            console.log("Resposta não é um PDF");
+            return "Algo deu Errado!";
         }
     } catch (error: any) {
-        console.error("Erro na requisição:", error);
+        console.log("🚀 ~ getPDF ~ error:", error);
+        return "Erro na requisição: " + error.message;
     }
 };

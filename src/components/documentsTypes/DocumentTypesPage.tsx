@@ -43,7 +43,7 @@ export const DocumentTypePage = () => {
                 <ItemButton
                     IconElement={LuPlus}
                     label="Novo"
-                    active={true}
+                    classNames={`text-white bg-green-400 hover:bg-green-600`}
                     onClick={() => setModalScreen("add")}
                 />
             </div>

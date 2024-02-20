@@ -8,27 +8,32 @@ import {
 type Props = {
     documents: Document[];
     loading: boolean;
+    refreshAction: () => void;
 };
 
-export const TableDocuments = ({ documents, loading }: Props) => {
+export const TableDocuments = ({
+    documents,
+    loading,
+    refreshAction,
+}: Props) => {
     return (
-        <div className="pb-4">
+        <div className="pb-4 rounded-br-2xl rounded-bl-2xl bg-white dark:bg-gray-800">
             <table className="w-full">
                 <thead>
-                    <tr className="text-center border-b border-gray-300 text-slate-400">
-                        <th className="font-medium py-2 border-r border-gray-300">
+                    <tr className="text-center border-b text-gray-400 border-gray-300 dark:border-gray-600">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             Numero
                         </th>
-                        <th className="font-medium py-2 border-r border-gray-300">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             Data
                         </th>
-                        <th className="font-medium py-2 border-r border-gray-300">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             Tipo
                         </th>
-                        <th className="font-medium py-2 border-r border-gray-300">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             Nome
                         </th>
-                        <th className="font-medium py-2 border-r border-gray-300">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             CPF/CNPJ
                         </th>
                         <th className="font-medium">Ações</th>
@@ -48,7 +53,11 @@ export const TableDocuments = ({ documents, loading }: Props) => {
                     {!loading &&
                         documents.length > 0 &&
                         documents.map((item) => (
-                            <TableDocumentItem document={item} key={item.id} />
+                            <TableDocumentItem
+                                document={item}
+                                key={item.id}
+                                refreshAction={refreshAction}
+                            />
                         ))}
                 </tbody>
             </table>

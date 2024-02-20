@@ -31,10 +31,12 @@ export const InputField = ({
                 onChange={onChange}
                 disabled={disabled}
                 id={id}
-                className={`block w-full border  p-3 rounded-lg outline-none 
-                placeholder:text-gray-300 ${
-                    errorMessage ? "border-red-600" : "border-gray-300"
-                } focus:border-black`}
+                className={`block w-full border p-3 bg-gray-50 dark:bg-gray-900 rounded-lg outline-none 
+                placeholder:text-gray-500 disabled:bg-transparent disabled:text-gray-400 disabled:cursor-not-allowed ${
+                    errorMessage
+                        ? "border-red-600"
+                        : "border-gray-300 dark:border-gray-600 focus:border-green-400"
+                }`}
             />
             {errorMessage && (
                 <div className="text-sm text-red-600">{errorMessage}</div>

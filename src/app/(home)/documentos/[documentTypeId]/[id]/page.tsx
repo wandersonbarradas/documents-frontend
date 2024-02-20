@@ -23,6 +23,14 @@ const page = async ({ params }: Props) => {
     if (params.id === "novo") {
         return <AddDocument documentType={documentType} />;
     }
+    const [identifier, id] = params.id.split("-");
+    if (identifier === "copia") {
+        const document = await api.getDocument(parseInt(id));
+        if (typeof document === "string") {
+            return notFound();
+        }
+        return <AddDocument documentType={documentType} document={document} />;
+    }
     if (isNaN(parseInt(params.id))) {
         return notFound();
     }

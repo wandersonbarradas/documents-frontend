@@ -17,6 +17,10 @@ export const DocumentPrint = ({ document }: Props) => {
     };
 
     useEffect(() => {
+        console.log(size);
+    }, []);
+
+    useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             // Verifica se a tecla pressionada é o 'P' e se a tecla Ctrl também está pressionada
             if (event.ctrlKey && (event.key === "p" || event.key === "P")) {
@@ -39,8 +43,8 @@ export const DocumentPrint = ({ document }: Props) => {
             <div className="min-h-screen bg-[url('/img/Imagem2.jpg')] bg-no-repeat bg-contain bg-center relative">
                 <div
                     id="box"
-                    className={`absolute top-0 left-0 right-0 bottom-0 ${
-                        size > 600 ? "pt-16" : "pt-52"
+                    className={`absolute top-0 left-0 right-0 bottom-0 text-black ${
+                        size > 700 ? "pt-16" : "pt-52"
                     } text-center bg-white/90`}
                 >
                     <div className="w-full max-w-xl mx-auto">
@@ -49,19 +53,22 @@ export const DocumentPrint = ({ document }: Props) => {
                                 {" "}
                                 {document.document_type.title}
                                 {document.document_type.has_number && (
-                                    <> - {Formatter.number(document.number)}</>
+                                    <>
+                                        {" "}
+                                        -{" "}
+                                        {Formatter.number(
+                                            document.number as string,
+                                        )}
+                                    </>
                                 )}
                             </b>
                         </div>
-                        <p
-                            style={{ whiteSpace: "pre-wrap" }}
+                        <div
                             dangerouslySetInnerHTML={{
-                                __html: document.text
-                                    .replace(/(?<!\*)\*\*(?!\*)/g, "<b>")
-                                    .replace(/(?<!\*)\*\*\*(?!\*)/g, "</b>"),
+                                __html: document.text,
                             }}
                             className="text-sm text-justify"
-                        ></p>
+                        ></div>
                         {document.document_type.expires && (
                             <p className="text-sm">
                                 O presente Documento tem validade de{" "}

@@ -1,9 +1,5 @@
 "use client";
 
-import {
-    TableDocumentItem,
-    TableDocumentPlaceholder,
-} from "../documents/TableDocumentItem";
 import { DocumentType } from "@/types/DocumentType";
 import {
     TableDocumentTypeItem,
@@ -23,17 +19,17 @@ export const TableDocumentType = ({
     openModal,
 }: Props) => {
     return (
-        <div className="pb-4 border border-gray-300 rounded-2xl">
+        <div className="pb-4 border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-2xl">
             <table className="w-full">
                 <thead>
-                    <tr className="text-center border-b border-gray-300 text-slate-400">
-                        <th className="font-medium py-2 border-r border-gray-300">
+                    <tr className="text-center border-b border-gray-300 dark:border-gray-600 text-gray-400 dark:text-slate-200">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             Nome
                         </th>
-                        <th className="font-medium py-2 border-r border-gray-300">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             Titulo
                         </th>
-                        <th className="font-medium py-2 border-r border-gray-300">
+                        <th className="font-medium py-2 border-r border-gray-300 dark:border-gray-600">
                             Validade
                         </th>
                         <th className="font-medium">Actions</th>

@@ -114,6 +114,7 @@ const page = () => {
                                 value={loading ? "Entrando..." : "Entrar"}
                                 onClick={handleBtnLogin}
                                 disabled={loading}
+                                type="add"
                             />
                         </div>
                     </div>

@@ -108,7 +108,7 @@ export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
                     <input
                         id="hasNumberField"
                         checked={hasNumberField}
-                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3"
+                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3 accent-green-400"
                         type="checkbox"
                         onChange={() => setHasNumberField(!hasNumberField)}
                     />
@@ -120,7 +120,7 @@ export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
                     <input
                         id="expiresField"
                         checked={expiresField}
-                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3"
+                        className="transition-all duration-500 ease-in-out w-6 h-6 mt-3 accent-green-400"
                         type="checkbox"
                         onChange={() => setExpiresField(!expiresField)}
                     />
@@ -156,6 +156,7 @@ export const DocumentTypeTabInfo = ({ refreshAction, documentType }: Props) => {
                     value={loading ? "Salvando..." : "Salvar"}
                     disabled={loading}
                     onClick={handleUpdateDocumentType}
+                    type="add"
                 />
             </div>
         </div>
