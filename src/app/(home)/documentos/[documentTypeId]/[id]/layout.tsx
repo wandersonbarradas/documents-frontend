@@ -1,9 +1,6 @@
 import { Metadata } from "next";
 
-export const generateMetadata = async ({
-    params,
-    searchParams,
-}: any): Promise<Metadata> => {
+export async function generateMetadata({ params }: any): Promise<Metadata> {
     if (params.id === "novo") {
         return {
             title: "Novo documento",
@@ -12,7 +9,7 @@ export const generateMetadata = async ({
     return {
         title: "Editando documento",
     };
-};
+}
 
 export default async function RootLayout({
     children,
