@@ -1,6 +1,11 @@
 import { Metadata } from "next";
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+type Props = {
+    params: { id: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (params.id === "novo") {
         return {
             title: "Novo documento",
