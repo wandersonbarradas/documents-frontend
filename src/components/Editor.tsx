@@ -39,11 +39,19 @@ export const Editor = ({ value, onChange, disabled }: Props) => {
                     : "default",
                 language_url: "../utils/langsTinyMCE/pt_BR.js",
                 height: 500,
-                default_font_stack: ["Roboto", "Arial", "Sans-serif"],
                 font_family_formats:
-                    "Roboto=Roboto,sans-serif,arial; Sans-serif=sans-serif,arial,helvetica; Arial=arial,sans-serif,helvetica; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n",
+                    "Roboto=Roboto,sans-serif,arial; Sans-serif=sans-serif,arial,helvetica; Arial=arial,helvetica,sans-serif; Times New Roman=times new roman,times,serif; Verdana=verdana,geneva,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n",
                 font_size_formats:
-                    "8pt 9pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 24pt 36pt 48pt",
+                    "8px 9px 10px 11px 12px 13px 14px 16px 18px 20px 24px 32px 36px 48px",
+                setup: function (editor) {
+                    editor.on("init", function () {
+                        // Define o tamanho da fonte padrão
+                        editor.execCommand("fontSize", false, "11pt");
+
+                        // Define a família de fontes padrão
+                        editor.execCommand("fontName", false, "Roboto");
+                    });
+                },
             }}
             onEditorChange={onChange}
         />
