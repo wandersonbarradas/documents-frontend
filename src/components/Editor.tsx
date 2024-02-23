@@ -39,6 +39,11 @@ export const Editor = ({ value, onChange, disabled }: Props) => {
                     : "default",
                 language_url: "../utils/langsTinyMCE/pt_BR.js",
                 height: 500,
+                default_font_stack: ["Roboto", "Arial", "Sans-serif"],
+                font_family_formats:
+                    "Roboto=Roboto,sans-serif,arial; Sans-serif=sans-serif,arial,helvetica; Arial=arial,sans-serif,helvetica; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n",
+                font_size_formats:
+                    "8pt 9pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 24pt 36pt 48pt",
             }}
             onEditorChange={onChange}
         />

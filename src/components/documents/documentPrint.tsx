@@ -40,7 +40,7 @@ export const DocumentPrint = ({ document }: Props) => {
 
     return (
         <>
-            <div className="min-h-screen bg-[url('/img/Imagem2.jpg')] bg-no-repeat bg-contain bg-center relative">
+            <div className="min-h-screen bg-[url('/img/imagem2.jpg')] bg-no-repeat bg-contain bg-center relative">
                 <div
                     id="box"
                     className={`absolute top-0 left-0 right-0 bottom-0 text-black ${
