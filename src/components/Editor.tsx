@@ -42,7 +42,7 @@ export const Editor = ({ value, onChange, disabled }: Props) => {
                 font_family_formats:
                     "Roboto=Roboto,sans-serif,arial; Sans-serif=sans-serif,arial,helvetica; Arial=arial,helvetica,sans-serif; Times New Roman=times new roman,times,serif; Verdana=verdana,geneva,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n",
                 font_size_formats:
-                    "8px 9px 10px 11px 12px 13px 14px 16px 18px 20px 24px 32px 36px 48px",
+                    "8px 9px 10px 11px 12px 13px 14px 15px 16px 18px 20px 24px 32px 36px 48px",
                 setup: function (editor) {
                     editor.on("init", function () {
                         // Define o tamanho da fonte padrão
