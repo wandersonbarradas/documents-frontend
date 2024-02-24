@@ -46,12 +46,12 @@ export const Editor = ({ value, onChange, disabled }: Props) => {
                 setup: function (editor) {
                     editor.on("init", function () {
                         // Define o tamanho da fonte padrão
-                        editor.execCommand("fontSize", false, "11pt");
-
-                        // Define a família de fontes padrão
-                        editor.execCommand("fontName", false, "Roboto");
+                        editor.execCommand("fontSize", false, "15px");
                     });
                 },
+                //text_align: "justify",
+                content_style:
+                    "body {text-align: justify; font-family: Roboto, arial, sans-serif}",
             }}
             onEditorChange={onChange}
         />
