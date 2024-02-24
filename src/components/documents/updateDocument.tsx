@@ -18,6 +18,7 @@ import { LuCopy } from "react-icons/lu";
 import { LuTrash2 } from "react-icons/lu";
 import { ModalDelete } from "../ModalDelete";
 import { decodeHtml } from "@/utils/decodedHtml";
+import { Loader } from "../loader";
 type Props = {
     documentType: DocumentTypeFull;
     document: Document;
@@ -37,6 +38,7 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
     const [selectTextError, setSelectTextError] = useState("");
     const [shouldRender, setShouldRender] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
+    const [loadingPrint, setLoadingPrint] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -109,7 +111,9 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
     };
 
     const handlePrintDocument = async () => {
+        setLoadingPrint(true);
         const result = await api.getPDF(document.id);
+        setLoadingPrint(false);
         if (result) {
             addAlert("error", result);
         }
@@ -296,6 +300,11 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
                     onClose={() => setModalDelete(false)}
                     onDelete={handleDeleteDocument}
                 />
+            )}
+            {loadingPrint && (
+                <div className="absolute top-0 left-0 bottom-0 right-0 h-screen flex-col gap-4 w-full flex items-center justify-center bg-black/70 z-20">
+                    <Loader />
+                </div>
             )}
         </>
     );

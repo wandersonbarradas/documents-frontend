@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import * as api from "@/api/documents";
 import { addAlert } from "@/utils/addAlert";
 import { ModalDelete } from "../ModalDelete";
+import { Loader } from "../loader";
 type Props = {
     document: Document;
     refreshAction: () => void;
@@ -20,6 +21,7 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
     const [cpfCnpj, setCpfCnpj] = useState("");
     const [dropdown, setDropdown] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
+    const [loadingPrint, setLoadingPrint] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -62,6 +64,15 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
         );
         router.refresh();
     };
+
+    const handlePrint = async () => {
+        setLoadingPrint(true);
+        const result = await api.getPDF(document.id);
+        setLoadingPrint(false);
+        if (result) {
+            addAlert("error", result);
+        }
+    };
     return (
         <>
             <tr
@@ -100,9 +111,7 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
                                     <ul>
                                         <li
                                             className="flex justify-center items-center gap-2 px-6 py-2 rounded-md hover:bg-gray-400 dark:hover:bg-gray-700"
-                                            onClick={() =>
-                                                api.getPDF(document.id)
-                                            }
+                                            onClick={handlePrint}
                                         >
                                             Imprimir
                                             <LuPrinter />
@@ -140,6 +149,11 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
                     onClose={() => setModalDelete(false)}
                     onDelete={handleDelete}
                 />
+            )}
+            {loadingPrint && (
+                <div className="absolute top-0 left-0 bottom-0 right-0 h-screen flex-col gap-4 w-full flex items-center justify-center bg-black/70 z-20">
+                    <Loader />
+                </div>
             )}
         </>
     );

@@ -52,7 +52,7 @@ export const HomePage = () => {
                         onClick={() => setNewDocumentModal(true)}
                         //href="/documents/novo"
                         label="Novo"
-                        classNames={`text-white bg-green-400 hover:bg-green-600`}
+                        classNames={`text-white bg-green-400 hover:bg-green-600 px-3 py-1`}
                     />
                 </div>
                 <div className="flex justify-end p-4 border-b gap-4 border-gray-300 dark:border-gray-600 ">
