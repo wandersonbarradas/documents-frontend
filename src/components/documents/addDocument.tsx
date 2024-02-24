@@ -12,6 +12,7 @@ import { addDocument } from "@/api/documents";
 import { useRouter } from "next/navigation";
 import { Editor } from "../Editor";
 import { Document } from "@/types/Document";
+import { decodeHtml } from "@/utils/decodedHtml";
 
 type Props = {
     documentType: DocumentTypeFull;
@@ -25,7 +26,7 @@ export const AddDocument = ({ documentType, document }: Props) => {
     const [selectedTextId, setSelectedTextId] = useState<number>(
         document?.document_type_text_id ?? 0,
     );
-    const [text, setText] = useState(document?.text ?? "");
+    const [text, setText] = useState(document?.html ?? "");
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
     const [selectTextError, setSelectTextError] = useState("");
@@ -69,7 +70,8 @@ export const AddDocument = ({ documentType, document }: Props) => {
             date: data.data.date,
             document_type_id: documentType.id,
             document_type_text_id: data.data.selectedTextId,
-            text: data.data.text,
+            text: decodeHtml(data.data.text),
+            html: data.data.text,
             created_at: new Date(),
         });
         if (typeof result === "string") {

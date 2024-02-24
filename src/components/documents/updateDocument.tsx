@@ -17,6 +17,7 @@ import { LuFileEdit } from "react-icons/lu";
 import { LuCopy } from "react-icons/lu";
 import { LuTrash2 } from "react-icons/lu";
 import { ModalDelete } from "../ModalDelete";
+import { decodeHtml } from "@/utils/decodedHtml";
 type Props = {
     documentType: DocumentTypeFull;
     document: Document;
@@ -30,7 +31,7 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
     const [selectedTextId, setSelectedTextId] = useState<number>(
         document.document_type_text_id,
     );
-    const [text, setText] = useState(document.text);
+    const [text, setText] = useState(document.html);
     const [disabled, setDisabled] = useState(true);
     const [errors, setErrors] = useState<ErrorItem[]>([]);
     const [selectTextError, setSelectTextError] = useState("");
@@ -77,7 +78,8 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
         const result = await api.updateDocument(document.id, {
             date: data.data.date,
             document_type_text_id: data.data.selectedTextId,
-            text: data.data.text,
+            text: decodeHtml(data.data.text),
+            html: data.data.text,
             number: data.data.number || undefined,
             updated_at: new Date(),
         });

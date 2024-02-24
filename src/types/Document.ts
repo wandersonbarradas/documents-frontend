@@ -4,6 +4,7 @@ export type Document = {
     id: number;
     number?: string;
     text: string;
+    html: string;
     date: string;
     user_id: number;
     document_type_id: number;
@@ -19,6 +20,7 @@ export type AddDocument = {
     document_type_id: number;
     document_type_text_id: number;
     text: string;
+    html: string;
     created_at: Date;
 };
 

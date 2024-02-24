@@ -24,12 +24,12 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
 
     useEffect(() => {
         const regexName =
-            /(?:sra|sr|firma|empresa|associação|espólio do sr|espólio da sra|espólio de)\.?(?:<strong>)?([^,]+)/i;
+            /(?:sra|sr|firma|empresa|associação|espólio do sr|espólio da sra|espólio de)\.?([^,]+)/i;
 
         const matchName = regexName.exec(document.text);
         if (matchName && matchName[1]) {
             let nome = matchName[1];
-            nome = nome.replace(/\*/g, "");
+            nome = nome.replace(/(?:\*|\-|\;)/g, "");
             setName(nome);
         }
         const regexCpfCnpj = /(?:CPF|CNPJ|CPF\/CNPJ)\:?\s(.*?),/i;
@@ -82,7 +82,7 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
                     {name}
                 </td>
                 <td className="py-2 border-r border-gray-300 dark:border-gray-600">
-                    {Formatter.cpfOrCnpj(cpfCnpj)}
+                    {cpfCnpj}
                 </td>
                 <td>
                     <div className="flex justify-center items-end ">
