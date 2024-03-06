@@ -17,7 +17,7 @@ export const TableDocuments = ({
     refreshAction,
 }: Props) => {
     return (
-        <div className="pb-4 rounded-br-2xl rounded-bl-2xl bg-white dark:bg-gray-800">
+        <div className="rounded-br-2xl rounded-bl-2xl bg-white dark:bg-gray-800">
             <table className="w-full">
                 <thead>
                     <tr className="text-center border-b text-gray-400 border-gray-300 dark:border-gray-600">

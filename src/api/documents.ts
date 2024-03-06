@@ -2,17 +2,38 @@ import { AddDocument, Document, UpdateDocument } from "@/types/Document";
 import { req } from "./axios";
 import { getCookie } from "cookies-next";
 
-export const getDocuments = async () => {
+export type Filter = {
+    page: number;
+    pageSize: number;
+    orderKey: string;
+    orderValue: "asc" | "desc";
+    owner?: string;
+    address?: string;
+    cpf_cnpj: string;
+};
+
+export const getDocuments = async (filter: Filter) => {
     try {
         const token = getCookie("token");
-        const result = await req.get("/documents", {
-            headers: {
-                Authorization: `Bearer ${token}`,
+        const result = await req.get(
+            `/documents?page=${filter.page}&pageSize=${filter.pageSize}&orderKey=${filter.orderKey}&orderValue=${filter.orderValue}&owner=${filter.owner}&cpf_cnpj=${filter.cpf_cnpj}&address=${filter.address}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             },
-        });
-        return (result.data.documents as Document[]) || [];
+        );
+        return (
+            (result.data as { documents: Document[]; totalCount: number }) || {
+                documents: [],
+                totalCount: 0,
+            }
+        );
     } catch (error: any) {
-        return [];
+        return {
+            documents: [],
+            totalCount: 0,
+        };
     }
 };
 

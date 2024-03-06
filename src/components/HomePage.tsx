@@ -12,27 +12,49 @@ import { Modal } from "./Modal";
 import { DocumentType } from "@/types/DocumentType";
 import { getDocumentsTypes } from "@/api/documentsTypes";
 import Link from "next/link";
+import { Pagination } from "./Pagination";
+import { pages } from "next/dist/build/templates/app-page";
 
 export const HomePage = () => {
     const [documents, setDocuments] = useState<Document[]>([]);
     const [documentTypes, setDocumentTypes] = useState<DocumentType[]>([]);
     const [loading, setLoading] = useState(true);
     const [newDocumentModal, setNewDocumentModal] = useState(false);
+    const [itemsCount, setItemsCount] = useState(0);
+    const [pageSize, setPageSize] = useState(3);
+    const [page, setPage] = useState(1);
+    const optionsPageSize = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
     useEffect(() => {
         loadDocuments();
         loadingDocumentsTypes();
     }, []);
 
+    useEffect(() => {
+        loadDocuments();
+    }, [page, pageSize]);
+
     const handleAddButton = () => {
         alert("TODO criar função de adicionar documento");
     };
 
+    const handlePageChange = (number: number) => {
+        setPage(number);
+    };
+
     const loadDocuments = async () => {
         setLoading(true);
-        const docs = await api.getDocuments();
-        if (docs) {
-        }
-        setDocuments(docs);
+        const filter: api.Filter = {
+            page,
+            pageSize,
+            orderKey: "id",
+            orderValue: "asc",
+            owner: "",
+            address: "",
+            cpf_cnpj: "",
+        };
+        const docs = await api.getDocuments(filter);
+        setItemsCount(docs.totalCount);
+        setDocuments(docs.documents);
         setLoading(false);
     };
 
@@ -72,6 +94,31 @@ export const HomePage = () => {
                     loading={loading}
                     refreshAction={loadDocuments}
                 />
+                <div className="p-3 flex items-center justify-between">
+                    <div className="">
+                        <select
+                            onChange={(e) =>
+                                setPageSize(parseInt(e.target.value))
+                            }
+                            value={pageSize}
+                            className="bg-gray-50 dark:bg-gray-900 p-1 outline-none border rounded-lg disabled:bg-transparent disabled:text-gray-400 disabled:cursor-not-allowed"
+                        >
+                            {optionsPageSize.map((item, index) => (
+                                <option key={index} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    Total: {itemsCount} - Mostrando {pageSize} por página
+                    {documents.length > 0 && (
+                        <Pagination
+                            currentPage={page}
+                            totalPages={Math.ceil(itemsCount / pageSize)}
+                            onPageChange={handlePageChange}
+                        />
+                    )}
+                </div>
             </div>
             {newDocumentModal && (
                 <Modal onClose={() => setNewDocumentModal(false)}>

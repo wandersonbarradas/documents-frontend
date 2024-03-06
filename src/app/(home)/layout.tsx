@@ -12,7 +12,7 @@ export default async function RootLayout({
     return (
         <>
             <Header />
-            <main className="mt-8">{children}</main>
+            <main className="mt-8 mb-4">{children}</main>
         </>
     );
 }
