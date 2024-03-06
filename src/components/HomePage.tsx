@@ -21,7 +21,7 @@ export const HomePage = () => {
     const [loading, setLoading] = useState(true);
     const [newDocumentModal, setNewDocumentModal] = useState(false);
     const [itemsCount, setItemsCount] = useState(0);
-    const [pageSize, setPageSize] = useState(3);
+    const [pageSize, setPageSize] = useState(10);
     const [page, setPage] = useState(1);
     const optionsPageSize = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
     useEffect(() => {
