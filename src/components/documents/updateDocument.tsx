@@ -19,6 +19,7 @@ import { LuTrash2 } from "react-icons/lu";
 import { ModalDelete } from "../ModalDelete";
 import { decodeHtml } from "@/utils/decodedHtml";
 import { Loader } from "../loader";
+import { ModalActions } from "../ModalActions";
 type Props = {
     documentType: DocumentTypeFull;
     document: Document;
@@ -302,9 +303,9 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
                 />
             )}
             {loadingPrint && (
-                <div className="absolute top-0 left-0 bottom-0 right-0 h-screen flex-col gap-4 w-full flex items-center justify-center bg-black/70 z-20">
+                <ModalActions>
                     <Loader />
-                </div>
+                </ModalActions>
             )}
         </>
     );

@@ -62,9 +62,11 @@ export const Pagination: React.FC<PaginationProps> = ({
                             </span>
                         ) : (
                             <button
-                                className={`block px-2 min-h-7 text-xs border border-gray-300 ${
-                                    number === currentPage ? "bg-gray-900" : ""
-                                } `}
+                                className={`block px-2 min-h-7 text-xs border border-gray-300 dark:border-gray-600 ${
+                                    number === currentPage
+                                        ? "bg-gray-200 dark:bg-gray-700"
+                                        : ""
+                                } hover:bg-gray-300 dark:hover:bg-gray-600`}
                                 onClick={() => onPageChange(number as number)}
                             >
                                 {number}

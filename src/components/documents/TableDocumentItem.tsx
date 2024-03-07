@@ -11,6 +11,7 @@ import * as api from "@/api/documents";
 import { addAlert } from "@/utils/addAlert";
 import { ModalDelete } from "../ModalDelete";
 import { Loader } from "../loader";
+import { ModalActions } from "../ModalActions";
 type Props = {
     document: Document;
     refreshAction: () => void;
@@ -151,9 +152,9 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
                 />
             )}
             {loadingPrint && (
-                <div className="fixed top-0 left-0 bottom-0 right-0 h-screen flex-col gap-4 w-full flex items-center justify-center bg-black/70 z-20">
+                <ModalActions>
                     <Loader />
-                </div>
+                </ModalActions>
             )}
         </>
     );

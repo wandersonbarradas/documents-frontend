@@ -9,14 +9,18 @@ export type Filter = {
     orderValue: "asc" | "desc";
     owner?: string;
     address?: string;
-    cpf_cnpj: string;
+    cpf_cnpj?: string;
+    number?: string;
+    initialDate?: string;
+    finalDate?: string;
+    documentType?: string;
 };
 
 export const getDocuments = async (filter: Filter) => {
     try {
         const token = getCookie("token");
         const result = await req.get(
-            `/documents?page=${filter.page}&pageSize=${filter.pageSize}&orderKey=${filter.orderKey}&orderValue=${filter.orderValue}&owner=${filter.owner}&cpf_cnpj=${filter.cpf_cnpj}&address=${filter.address}`,
+            `/documents?page=${filter.page}&pageSize=${filter.pageSize}&orderKey=${filter.orderKey}&orderValue=${filter.orderValue}&number=${filter.number}&owner=${filter.owner}&cpf_cnpj=${filter.cpf_cnpj}&address=${filter.address}&initialDate=${filter.initialDate}&finalDate=${filter.finalDate}&documentType=${filter.documentType}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
