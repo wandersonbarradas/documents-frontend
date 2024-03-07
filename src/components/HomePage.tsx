@@ -84,7 +84,7 @@ export const HomePage = () => {
     const handleFinalDate = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
         if (value) {
-            setFinalDateField(value + "T00:00:00");
+            setFinalDateField(value + "T23:59:59");
         } else {
             setFinalDateField("");
         }
