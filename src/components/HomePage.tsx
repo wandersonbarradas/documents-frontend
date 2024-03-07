@@ -21,7 +21,7 @@ export const HomePage = () => {
     const [loading, setLoading] = useState(true);
     const [newDocumentModal, setNewDocumentModal] = useState(false);
     const [itemsCount, setItemsCount] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(25);
     const [page, setPage] = useState(1);
 
     const [ownerField, setOwnerField] = useState("");

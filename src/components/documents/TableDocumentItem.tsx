@@ -83,6 +83,7 @@ export const TableDocumentItem = ({ document, refreshAction }: Props) => {
             >
                 <td className="py-2 border-r border-gray-300 dark:border-gray-600">
                     {document.number && Formatter.number(document.number)}
+                    {!document.number && <>-</>}
                 </td>
                 <td className="py-2 border-r border-gray-300 dark:border-gray-600">
                     {Formatter.date(document.date)}
