@@ -39,11 +39,6 @@ export const HomePage = () => {
     }, []);
 
     useEffect(() => {
-        console.log("initial", initialDateField);
-        console.log("Final", initialDateField);
-    }, [initialDateField, finalDateField]);
-
-    useEffect(() => {
         loadDocuments();
     }, [page, pageSize, itemsCount]);
 
@@ -79,12 +74,20 @@ export const HomePage = () => {
 
     const handleInitialDate = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
-        setInitialDateField(value);
+        if (value) {
+            setInitialDateField(value + "T00:00:00");
+        } else {
+            setInitialDateField("");
+        }
     };
 
     const handleFinalDate = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
-        setFinalDateField(value);
+        if (value) {
+            setFinalDateField(value + "T00:00:00");
+        } else {
+            setFinalDateField("");
+        }
     };
 
     return (
