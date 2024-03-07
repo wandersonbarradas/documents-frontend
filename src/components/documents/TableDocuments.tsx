@@ -51,7 +51,7 @@ export const TableDocuments = ({
                         </>
                     )}
                     {!loading &&
-                        documents.length > 0 &&
+                        documents?.length > 0 &&
                         documents.map((item) => (
                             <TableDocumentItem
                                 document={item}
@@ -61,7 +61,7 @@ export const TableDocuments = ({
                         ))}
                 </tbody>
             </table>
-            {!loading && documents.length <= 0 && loading === false && (
+            {!loading && documents?.length <= 0 && loading === false && (
                 <div className="pt-3 text-center">
                     Nenhum documento para exibir! 👻
                 </div>

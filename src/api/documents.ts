@@ -34,6 +34,7 @@ export const getDocuments = async (filter: Filter) => {
             }
         );
     } catch (error: any) {
+        console.log("🚀 ~ getDocuments ~ error:", error);
         return {
             documents: [],
             totalCount: 0,

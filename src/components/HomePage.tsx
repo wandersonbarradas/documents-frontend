@@ -39,6 +39,11 @@ export const HomePage = () => {
     }, []);
 
     useEffect(() => {
+        console.log("initial", initialDateField);
+        console.log("Final", initialDateField);
+    }, [initialDateField, finalDateField]);
+
+    useEffect(() => {
         loadDocuments();
     }, [page, pageSize, itemsCount]);
 
@@ -73,12 +78,12 @@ export const HomePage = () => {
     };
 
     const handleInitialDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value + "T00:00:00";
+        const value = e.currentTarget.value;
         setInitialDateField(value);
     };
 
     const handleFinalDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value + "T00:00:00";
+        const value = e.currentTarget.value;
         setFinalDateField(value);
     };
 
@@ -260,7 +265,7 @@ export const HomePage = () => {
                         </select>
                     </div>
                     Total: {itemsCount} - Mostrando {pageSize} por página
-                    {documents.length > 0 && (
+                    {documents?.length > 0 && (
                         <Pagination
                             currentPage={page}
                             totalPages={Math.ceil(itemsCount / pageSize)}
