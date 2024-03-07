@@ -302,7 +302,7 @@ export const UpdateDocument = ({ documentType, document }: Props) => {
                 />
             )}
             {loadingPrint && (
-                <div className="absolute top-0 left-0 bottom-0 right-0 h-screen flex-col gap-4 w-full flex items-center justify-center bg-black/70 z-20">
+                <div className="fixed top-0 left-0 bottom-0 right-0 h-screen flex-col gap-4 w-full flex items-center justify-center bg-black/70 z-20">
                     <Loader />
                 </div>
             )}
