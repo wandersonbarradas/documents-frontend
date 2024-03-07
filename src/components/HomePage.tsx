@@ -52,7 +52,7 @@ export const HomePage = () => {
             page,
             pageSize,
             orderKey: "id",
-            orderValue: "asc",
+            orderValue: "desc",
             owner: ownerField,
             address: addressField,
             cpf_cnpj: Formatter.cpfOrCnpj(cpfCnpjField),
