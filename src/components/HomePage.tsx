@@ -113,7 +113,7 @@ export const HomePage = () => {
                                     className="block mb-1 pl-1"
                                     htmlFor="numero"
                                 >
-                                    Numero do documento
+                                    Nº do documento
                                 </label>
                                 <InputField
                                     id="numero"
